@@ -6,7 +6,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.post('/handlePost',(req,res) => {
-    var myImage=request.body.imageURL;
+    var myImage=req.body.imageURL;
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify({"Resultat":myImage}))
     });
