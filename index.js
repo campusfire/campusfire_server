@@ -1,14 +1,12 @@
-const http = require('http') 
+const express = require('express');
+const app = express();
 
-var express = require('express')
-var app = express()
+app.get('/', (req, res) => {
+  res.send('Bonjour depuis agastache');
+});
 
-app.set ('view engine', 'ejs');
-
-app.get('/', (request, response) => {
-    response.render('Ceci fonctionne')
-    response.statusCode = 200;
-    response.setHeader('Content-Type', 'text/html'); 
-})
-
-app.listen(10402);
+// Listen to the App Engine-specified port, or 8080 otherwise
+const PORT = process.env.PORT || 10402;
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}...`);
+});
