@@ -14,7 +14,7 @@ const upload = multer({
 app.set('view engine', 'ejs');
 
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({limit:'10mb', extended: false }));
 app.use(bodyParser.json());
 app.use("/uploads", express.static(__dirname + '/uploads'));
 
