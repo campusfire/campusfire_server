@@ -21,7 +21,7 @@ app.use("/uploads", express.static(__dirname + '/uploads'));
 
 app.post('/handlePost',(req,res) => {
     // var myImage=req.body.imageURL;
-    
+
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify({"Resultat":myImage}));
     console.log(myImage);
@@ -39,7 +39,7 @@ app.post(
         io.sockets.emit('refresh-msg', { data: 'whatever'});
         fs.rename(tempPath, targetPath, err => {
             if (err) return handleError(err, res);
-    
+
             res
             .status(200)
             .contentType("text/plain")
@@ -48,7 +48,7 @@ app.post(
         } else {
         fs.unlink(tempPath, err => {
             if (err) return handleError(err, res);
-    
+
             res
             .status(403)
             .contentType("text/plain")
@@ -67,6 +67,18 @@ app.get("/image.jpg", (req, res) => {
     // res.sendFile(path.join(__dirname, "./uploads/image.jpg"));
     res.render("handlePost")
 });
+
+app.post('/authenticationPlayer1',(req,res) => {
+    var barcodePlayer1=req.body.barcodeSent;
+    res.setHeader('Content-Type', 'application/json');
+    if (barcodePlayer1=="CodeJoueur1Complique") {
+      res.send(JSON.stringify({"Resultat":barcodePlayer1,"AuthStatus":"AuthGranted"}));
+    }
+    else {
+      res.send(JSON.stringify({"Resultat":barcodePlayer1,"AuthStatus":"AuthFailed"}));
+    }
+    console.log('barcode reçu :'+ barcodePlayer1)
+    });
 
 
 app.get('/', (req, res) => {
