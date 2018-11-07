@@ -33,7 +33,7 @@ app.post(
     (req, res) => {
         const tempPath = req.file.path;
         const targetPath = path.join(__dirname, "./uploads/image.jpg");
-        if (path.extname(req.file.originalname).toLowerCase() === ".jpg") {
+        if (path.extname(req.file.originalname).toLowerCase() === ".jpg" || path.extname(req.file.originalname).toLowerCase() === ".jpeg" ||path.extname(req.file.originalname).toLowerCase() === ".png")   {
         //Emit socket.io message:
         //Peut etre plus élégant si j'arrive à faire passer directement l'image en binaire dans le message socket.io
         io.sockets.emit('refresh-msg', { data: 'whatever'});
