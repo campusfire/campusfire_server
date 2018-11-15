@@ -48,7 +48,8 @@ module.exports = (logger) => {
             }
             console.log(req.body.file)
             
-            const tempPath = req.file.path;
+            // const tempPath = req.file.path;
+            const tempPath=req.body.file.path;
             
             
             const targetPath = path.join(__dirname, "./uploads/image.jpg");
