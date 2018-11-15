@@ -42,10 +42,11 @@ module.exports = (logger) => {
             logger.error("------------")
             console.log(req);
             console.log("---------------");
-            console.log(req.body);
-            console.log("---------------");
-            console.log(req.body.data);
-            console.log(req.file);
+            var keys=Object.keys(req);
+            for(var i=0;i<keys.length;i++){
+                console.log(keys[i]);
+            }
+            
             const tempPath = req.file.path;
             
             
@@ -57,7 +58,6 @@ module.exports = (logger) => {
                     io.sockets.emit('refresh-msg', { data: 'whatever'});
                     fs.rename(tempPath, targetPath, err => {
                         if (err) return handleError(err, res);
-        
                         res
                         .status(200)
                         .contentType("text/plain")
