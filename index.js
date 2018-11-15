@@ -9,6 +9,7 @@ const http = require("http").Server(app);
 const qrcode=require("qrcode-generator");
 
 
+
 var io=require('socket.io')(http);
 const upload = multer({
     dest: "./uploads"
@@ -112,10 +113,10 @@ module.exports = (logger) => {
     return app;
 
 }
-//Define port
-const PORT = process.env.PORT || 10410;
+// //Define port
+// const PORT = process.env.PORT || 10410;
 
-//Run the server using express
-app.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}...`);
-});
+// //Run the server using express
+// app.listen(PORT, () => {
+//     console.log(`Server listening on port ${PORT}...`);
+// });
