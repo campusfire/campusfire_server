@@ -38,7 +38,8 @@ module.exports = (logger) => {
         "/file-upload",
         upload.single("Image" /* name attribute of <file> element in your form */),
         (req, res) => {
-            logger.error("Ma requete:" + req.stringify);
+            logger.error(req);
+            logger.error("------------")
             console.log(req);
             console.log("---------------");
             console.log(req.body);
