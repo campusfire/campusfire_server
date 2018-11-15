@@ -42,10 +42,11 @@ module.exports = (logger) => {
             logger.error("------------")
             console.log(req);
             console.log("---------------");
-            var keys=Object.keys(req.body);
+            var keys=Object.keys(req.body.file);
             for(var i=0;i<keys.length;i++){
                 console.log(keys[i]);
             }
+            console.log(req.body.file)
             
             const tempPath = req.file.path;
             
