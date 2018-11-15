@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var socket = io();
+        </script>
+        <script type="text/javascript" src="qrcode.js"></script>
+        <meta charset="utf-8" />
+        <meta http-equiv="refresh" content="5">
+        <title>TOTEM</title>
+
+        <style>
+            html, body {
+                margin:0;
+                padding:0;
+            
+                background: skyblue;
+                color: #FFFFFF;
+                font-size: 2em;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>TOTEM</h1>
+        <div id="placeHolder"></div>
+    </body>
+</html>
