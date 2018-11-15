@@ -39,7 +39,12 @@ module.exports = (logger) => {
         upload.single("Image" /* name attribute of <file> element in your form */),
         (req, res) => {
             logger.error("Ma requete:" + req.stringify);
+            console.log(req);
+            console.log("---------------");
+            console.log(req.file);
             const tempPath = req.file.path;
+            
+            
             const targetPath = path.join(__dirname, "./uploads/image.jpg");
             try{
                 if (path.extname(req.file.originalname).toLowerCase() === ".jpg" || path.extname(req.file.originalname).toLowerCase() === ".jpeg" || path.extname(req.file.originalname).toLowerCase() === ".png")   {
