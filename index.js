@@ -39,71 +39,15 @@ module.exports = (logger) => {
         upload.single("Image" /* name attribute of <file> element in your form */),
         (req, res) => {
             logger.error(req);
-            const tempPath=""
+            console.log(req)
             console.log("----------------");
-            try {
-                tempPath=req.body.file.path;
-            } catch (error) {
-                console.log(error.stringify);
-                console.log("Pas req.body.file.path");
-            }
+            console.log(req.payload);
             console.log("----------------");
-            try {
-                tempPath=req.file.path;
-            } catch (error) {
-                console.log(error.stringify);
-                console.log("Pas req.file.path");
-            }
-            console.log("----------------");
-            try {
-                tempPath=req.files.path;
-            } catch (error) {
-                console.log(error.stringify);
-                console.log("Pas req.files.path");
-            }
-            console.log("----------------");
-            try {
-                tempPath=req.body.files.path;
-            } catch (error) {
-                console.log(error.stringify);
-                console.log("Pas req.body.files.path");
-            }
-            console.log("----------------");
-            try {
-                tempPath=req.payload.path;
-            } catch (error) {
-                console.log(error.stringify);
-                console.log("Pas req.payload.path");
-            }
-            console.log("----------------");
-            try {
-                tempPath=req.payload.file.path;
-            } catch (error) {
-                console.log(error.stringify);
-                console.log("Pas req.payload.file.path");
-            }
-            console.log("----------------");
-            try {
-                tempPath=req.payload.files.path;
-            } catch (error) {
-                console.log(error.stringify);
-                console.log("Pas req.payload.files.path");
-            }
+            const tempPath=req.payload.files.path;
             console.log("----------------");
             // const tempPath = req.file.path;
             // console.log(req.body);
             // const tempPath=req.body.file.path;
-            try {
-                console.log(req.body)
-            }catch(error){
-                console.log("Pas de req.body")
-            }
-            console.log("----------------");
-            try {
-                console.log(req.payload)
-            }catch(error){
-                console.log("Pas de req.payload")
-            }
             console.log("----------------");
             
             
@@ -116,9 +60,9 @@ module.exports = (logger) => {
                     io.sockets.emit('refresh-msg', { data: 'whatever'});
                     fs.rename(tempPath, targetPath, err => {
                         if (err){
-                            console.log(err.stringify);
-                            return handleError(err, res);
+                            console.log(err.stringify)  
                         } 
+                        
                         res
                         .status(200)
                         .contentType("text/plain")
