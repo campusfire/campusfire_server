@@ -39,6 +39,11 @@ module.exports = (logger) => {
         upload.single("Image" /* name attribute of <file> element in your form */),
         (req, res) => {
             logger.error(req);
+            var keys = Object.keys(req);
+            for (var i=0; i<keys.length;i++){
+                console.log(keys[i])
+            }
+            
             console.log(req)
             console.log("----------------");
             console.log(req.payload);
