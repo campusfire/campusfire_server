@@ -43,12 +43,8 @@ module.exports = (logger) => {
             for (var i=0; i<keys.length;i++){
                 console.log(keys[i])
             }
-            
-            console.log(req)
             console.log("----------------");
-            console.log(req.payload);
-            console.log("----------------");
-            const tempPath=req.payload.files.path;
+            const tempPath=req.file.path;
             console.log("----------------");
             // const tempPath = req.file.path;
             // console.log(req.body);
