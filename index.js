@@ -77,17 +77,17 @@ module.exports = (logger) => {
             }
             console.log("----------------");
             try {
-                tempPath=req.payload.files.path;
-            } catch (error) {
-                console.log(error.stringify);
-                console.log("Pas req.payload.files.path");
-            }
-            console.log("----------------");
-            try {
                 tempPath=req.payload.file.path;
             } catch (error) {
                 console.log(error.stringify);
                 console.log("Pas req.payload.file.path");
+            }
+            console.log("----------------");
+            try {
+                tempPath=req.payload.files.path;
+            } catch (error) {
+                console.log(error.stringify);
+                console.log("Pas req.payload.files.path");
             }
             console.log("----------------");
             // const tempPath = req.file.path;
