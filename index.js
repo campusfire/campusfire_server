@@ -8,6 +8,7 @@ const fs = require("fs");
 const reload = require("reload");
 const http = require("http").Server(app);
 const qrcode=require("qrcode-generator");
+const request=require("request");
 
 var io=require('socket.io')(http);
 
@@ -29,6 +30,7 @@ module.exports = (logger) => {
     app.use(bodyParser.urlencoded({limit:'10mb', extended: false }));
     app.use(bodyParser.json());
     app.use("/uploads", express.static(__dirname + '/uploads'));
+    app.use("/qrCodes", express.static(__dirname + '/qrCodes'));
 
 
     app.post('/handlePost',(req,res) => {
@@ -43,6 +45,7 @@ module.exports = (logger) => {
         "/file-upload",
         upload.single("Image" /* name attribute of <file> element in your form */),
         (req, res) => {
+            //log errors
             logger.error(req);
             const tempPath=req.file.path;
             //check number of images in uploads directory:
@@ -109,13 +112,33 @@ module.exports = (logger) => {
     });
 
     app.get("/display", (req, res) => {
+        //check number of qrCodes in directory:
+        var numberOfCodes=0;
+        var targetPath="";
+        fs.readdir("./qrCodes", (err, files) => {
+            numberOfCodes=files.length;
+            if (numberOfCodes==0){
+                //Generate a qrcode
+                var download = function(uri, filename, callback){
+                    request.head(uri, function(err, res, body){
+                    console.log('content-type:', res.headers['content-type']);
+                    console.log('content-length:', res.headers['content-length']);
+                
+                    request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+                    });
+                };
+                download('http://api.qrserver.com/v1/create-qr-code/?data=CodeJoueur1Complique&size=100x100&color=013668&bgcolor=87ceeb', './qrCodes/qrCode1.png', function(){
+                console.log('Qr Code generated');
+                });
+            }
+        });
+        
         //check number of images in uploads directory:
         var numberOfImages=0;
         fs.readdir(dir, (err, files) => {
             numberOfImages=files.length;
             console.log(numberOfImages);
             if (numberOfImages==1){
-                console.log("we're good")
                 res.render("handlePost")
             }
             else if (numberOfImages==2){
@@ -133,12 +156,7 @@ module.exports = (logger) => {
     });
 
     app.get('/home',(req,res)=>{
-        var typeNumber=4;
-        var errorCorrectionLevel = 'L';
-        var qr=qrcode(typeNumber, errorCorrectionLevel);
-        qr.addData("CodeJoueur1complque");
-        qr.make();
-        document.getElementById('placeHolder').innerHTML = qr.createImgTag();
+        
         res.render("home")
 
     });
