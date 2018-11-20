@@ -3,18 +3,23 @@ const bodyParser= require('body-parser');
 const app = express();
 const multer = require("multer");
 const path = require("path");
+const _=require("underscore")
 const fs = require("fs");
 const reload = require("reload");
 const http = require("http").Server(app);
 const qrcode=require("qrcode-generator");
 
-
-
 var io=require('socket.io')(http);
+
+//Set directory of uploaded images:
+const dir = './uploads';
 const upload = multer({
-    dest: "./uploads"
+    dest: dir
     // Pour gérer des limitations sur ce qu'on accepte: https://github.com/expressjs/multer#limits
   });
+
+
+
 
 module.exports = (logger) => {
 
@@ -39,50 +44,62 @@ module.exports = (logger) => {
         upload.single("Image" /* name attribute of <file> element in your form */),
         (req, res) => {
             logger.error(req);
-            var keys = Object.keys(req);
-            for (var i=0; i<keys.length;i++){
-                console.log(keys[i])
-            }
-            console.log("----------------");
             const tempPath=req.file.path;
-            console.log("----------------");
-            // const tempPath = req.file.path;
-            // console.log(req.body);
-            // const tempPath=req.body.file.path;
-            console.log("----------------");
+            //check number of images in uploads directory:
+            var numberOfImages=0;
+            var targetPath="";
+            fs.readdir(dir, (err, files) => {
+                numberOfImages=files.length;
+                if (numberOfImages==1){
+                    targetPath = path.join(__dirname, "./uploads/image.jpg"); 
+                }
+                else if(numberOfImages==2){
+                    targetPath = path.join(__dirname, "./uploads/image2.jpg"); 
+                }
+                else if(numberOfImages==3){
+                    targetPath = path.join(__dirname, "./uploads/image3.jpg"); 
+                }
+                else if(numberOfImages==4){
+                    targetPath = path.join(__dirname, "./uploads/image4.jpg"); 
+                }
+                else if(numberOfImages==5){
+                    oldestImageName=getOldestFileName(files)
+                    console.log(oldestImageName);
+                    targetPath = path.join(__dirname, "./uploads/"+oldestImageName); 
+                }
+                
+                try{
+                    if (path.extname(req.file.originalname).toLowerCase() === ".jpg" || path.extname(req.file.originalname).toLowerCase() === ".jpeg" || path.extname(req.file.originalname).toLowerCase() === ".png")   {
+                        //Emit socket.io message:
+                        //Peut etre plus élégant si j'arrive à faire passer directement l'image en binaire dans le message socket.io
+                        io.sockets.emit('refresh-msg', { data: 'whatever'});
+                        fs.rename(tempPath, targetPath, err => {
+                            if (err){
+                                console.log(err.stringify)  
+                            } 
+                            
+                            res
+                            .status(200)
+                            .contentType("text/plain")
+                            .end("File uploaded!");
+                        });
+                    } else {
+                        fs.unlink(tempPath, err => {
+                            if (err) return handleError(err, res);
+            
+                            res
+                            .status(403)
+                            .contentType("text/plain")
+                            .end("Only .jpg files are allowed!");
+                        });
+                        }
+                }
+                catch(err){
+                    logger.error("Error:" + err.stringify);
+                }
+            });
             
             
-            
-            const targetPath = path.join(__dirname, "./uploads/image.jpg");
-            try{
-                if (path.extname(req.file.originalname).toLowerCase() === ".jpg" || path.extname(req.file.originalname).toLowerCase() === ".jpeg" || path.extname(req.file.originalname).toLowerCase() === ".png")   {
-                    //Emit socket.io message:
-                    //Peut etre plus élégant si j'arrive à faire passer directement l'image en binaire dans le message socket.io
-                    io.sockets.emit('refresh-msg', { data: 'whatever'});
-                    fs.rename(tempPath, targetPath, err => {
-                        if (err){
-                            console.log(err.stringify)  
-                        } 
-                        
-                        res
-                        .status(200)
-                        .contentType("text/plain")
-                        .end("File uploaded!");
-                    });
-                } else {
-                    fs.unlink(tempPath, err => {
-                        if (err) return handleError(err, res);
-        
-                        res
-                        .status(403)
-                        .contentType("text/plain")
-                        .end("Only .jpg files are allowed!");
-                    });
-                    }
-            }
-            catch(err){
-                logger.error("Error:" + err.stringify);
-            }
         }
     );
     //When I receive the socket message:
@@ -91,9 +108,28 @@ module.exports = (logger) => {
         console.log(socket);
     });
 
-    app.get("/image.jpg", (req, res) => {
-        // res.sendFile(path.join(__dirname, "./uploads/image.jpg"));
-        res.render("handlePost")
+    app.get("/display", (req, res) => {
+        //check number of images in uploads directory:
+        var numberOfImages=0;
+        fs.readdir(dir, (err, files) => {
+            numberOfImages=files.length;
+            console.log(numberOfImages);
+            if (numberOfImages==1){
+                console.log("we're good")
+                res.render("handlePost")
+            }
+            else if (numberOfImages==2){
+                res.render("handlePost2")
+            }
+            else if (numberOfImages==3){
+                res.render("handlePost3")
+            }
+            else if (numberOfImages==4){
+                res.render("handlePost4")
+            }
+        });
+        
+        
     });
 
     app.get('/home',(req,res)=>{
@@ -124,6 +160,18 @@ module.exports = (logger) => {
         res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify({"Resultat":"Bonjour depuis agastache"}));
     });
+
+    function getOldestFileName(files) {
+    
+        // use underscore for min()
+        return _.min(files, function (f) {
+            var fullpath = path.join(dir, f);
+    
+            // ctime = creation time is used
+            // replace with mtime for modification time
+            return fs.statSync(fullpath).ctime;
+        });
+    }
 
     return app;
 
