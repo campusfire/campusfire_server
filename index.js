@@ -117,7 +117,7 @@ module.exports = (logger) => {
         var targetPath="";
         fs.readdir("./qrCodes", (err, files) => {
             numberOfCodes=files.length;
-            if (numberOfCodes==0){
+            if (numberOfCodes==1){
                 //Generate a qrcode
                 var download = function(uri, filename, callback){
                     request.head(uri, function(err, res, body){
