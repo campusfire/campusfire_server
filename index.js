@@ -107,7 +107,6 @@ module.exports = (logger) => {
     );
     //When I receive the socket message:
     io.on('refresh-msg', function (socket) {
-        console.log("oui");
         console.log(socket);
     });
 
@@ -187,7 +186,6 @@ module.exports = (logger) => {
     
             // ctime = creation time is used
             // replace with mtime for modification time
-            return fs.statSync(fullpath).ctime;
         });
     }
 
