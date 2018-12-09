@@ -19,11 +19,7 @@
             <div class="card-table">
                 <div class="content">
                     <table class="table is-fullwidth is-striped is-hoverable" id="textTable">
-                        <tbody>
-                        <tr>
-                            <td width="5%"></td>
-                            <td>Lorum ipsum dolem aire</td>
-                        </tr>
+                        <tbody id="bodyTextTable">
                         </tbody>
                     </table>
                 </div>
@@ -37,10 +33,12 @@
 
 <script>
     $.get('http://node.oignon.ovh1.ec-m.fr/postedText', function(textData, status) {
+        $('#bodyTextTable').children().remove();
+
         var lines = textData.replace(/\"/g,'').split(/\n/);
 
         $.each(lines, function(n, contentLine) {
-            $('#textTable').append('<tr>\n <td width="5%"></td>\n <td>' + contentLine + '</td> </tr>');
+            $('#bodyTextTable').append('<tr>\n <td width="5%"></td>\n <td>' + contentLine + '</td> </tr>');
         });
     }, 'text');
 </script>
