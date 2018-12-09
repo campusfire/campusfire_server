@@ -127,7 +127,7 @@ module.exports = (logger) => {
         });
     });
 
-    
+
     //When I receive the socket message:
     io.on('refresh-msg', function (socket) {
         console.log(socket);
