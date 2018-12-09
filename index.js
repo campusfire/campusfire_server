@@ -105,6 +105,29 @@ module.exports = (logger) => {
             
         }
     );
+
+    //reception of text message
+    app.post('/postText',(req,res) => {
+        var receivedText = req.body.sentText;
+
+        fs.appendFile('postedText.txt', receivedText+"\n", (err) => { //ajout d'une ligne au fichier d'écriture
+            if (err) throw err;
+        });
+
+        res.setHeader('Content-Type', 'application/json'); //formulation d'une confirmation
+        res.send(JSON.stringify({"Resultat":"text received"}));
+        console.log("text received");
+    });
+
+    //endpoint to serve postedText content
+    app.get('/postedText',(req,res) => {
+        fs.readFile('postedText.txt', 'utf8', function(err, data) {
+            if (err) throw err;
+            return res.end(data);
+        });
+    });
+
+    
     //When I receive the socket message:
     io.on('refresh-msg', function (socket) {
         console.log(socket);
