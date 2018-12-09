@@ -36,7 +36,7 @@
 
 
 <script>
-    $.get('http://node.melisse.ovh1.ec-m.fr/postedText', function(textData, status) {
+    $.get('http://node.oignon.ovh1.ec-m.fr/postedText', function(textData, status) {
         var lines = textData.replace(/\"/g,'').split(/\n/);
 
         $.each(lines, function(n, contentLine) {
