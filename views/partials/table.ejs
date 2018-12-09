@@ -1,0 +1,46 @@
+<!-- views/partials/table.ejs -->
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+
+<div class="columns is-centered">
+    <div class="column is-5">
+        <div class="card events-card">
+            <header class="card-header">
+                <p class="card-header-title">
+                    Events
+                </p>
+                <a href="#" class="card-header-icon" aria-label="more options">
+                  <span class="icon">
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                  </span>
+                </a>
+            </header>
+            <div class="card-table">
+                <div class="content">
+                    <table class="table is-fullwidth is-striped is-hoverable" id="textTable">
+                        <tbody>
+                        <tr>
+                            <td width="5%"></td>
+                            <td>Lorum ipsum dolem aire</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <footer class="card-footer">
+            </footer>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $.get('http://node.melisse.ovh1.ec-m.fr/postedText', function(textData, status) {
+        var lines = textData.replace(/\"/g,'').split(/\n/);
+
+        $.each(lines, function(n, contentLine) {
+            $('#textTable').append('<tr>\n <td width="5%"></td>\n <td>' + contentLine + '</td> </tr>');
+        });
+    }, 'text');
+</script>
