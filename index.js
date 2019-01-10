@@ -31,6 +31,7 @@ module.exports = (logger) => {
     app.use(bodyParser.json());
     app.use("/uploads", express.static(__dirname + '/uploads'));
     app.use("/qrCodes", express.static(__dirname + '/qrCodes'));
+    app.use("/images", express.static(__dirname + '/images'));
 
 
     app.post('/handlePost',(req,res) => {
@@ -134,6 +135,11 @@ module.exports = (logger) => {
     });
 
     app.get("/display", (req, res) => {
+        //get the value of the fields in QRCodeRegister and store them in variables
+        let rawQrRegister=fs.readFileSync('./qrCodes/QRCodeRegister.json')
+        let qrRegister=JSON.parse(rawQrRegister)
+    
+       /* 
         //check number of qrCodes in directory:
         var numberOfCodes=0;
         var targetPath="";
@@ -153,24 +159,24 @@ module.exports = (logger) => {
                 console.log('Qr Code generated');
                 });
             }
-        });
-        
+        });*/
         //check number of images in uploads directory:
         var numberOfImages=0;
         fs.readdir(dir, (err, files) => {
             numberOfImages=files.length;
             console.log(numberOfImages);
             if (numberOfImages==1){
-                res.render("handlePost")
+                console.log(qrRegister.qrCode1)
+                res.render("handlePost",{qrRegister:qrRegister})
             }
             else if (numberOfImages==2){
-                res.render("handlePost2")
+                res.render("handlePost2",qrRegister)
             }
             else if (numberOfImages==3){
-                res.render("handlePost3")
+                res.render("handlePost3",qrRegister)
             }
             else if (numberOfImages==4){
-                res.render("handlePost4")
+                res.render("handlePost4",qrRegister)
             }
         });
         
@@ -184,15 +190,50 @@ module.exports = (logger) => {
     });
 
     app.post('/authenticationPlayer1',(req,res) => {
-        var barcodePlayer1=req.body.barcodeSent;
+        var barcodePlayer=req.body.barcodeSent;
+        let qrRegister=fs.readFileSync('./qrCodes/QRCodeRegister.json');
+        qrRegister=JSON.parse(rawQrRegister);
         res.setHeader('Content-Type', 'application/json');
+        if (barcodePlayer=="CodeJoueur1"){
+            res.send(JSON.stringify({"Resultat":barcodePlayer,"AuthStatus":"AuthGranted"}));
+            //Change the status in the register
+            qrRegister.qrCode1="false"
+            qrRegister=JSON.stringify(qrRegister)
+            fs.writeFileSync('./qrCodes/QRCodeRegister.json', qrRegister)
+        }
+        else if (barcodePlayer=="CodeJoueur2"){
+            res.send(JSON.stringify({"Resultat":barcodePlayer,"AuthStatus":"AuthGranted"}));
+            //Change the status in the register
+            qrRegister.qrCode2="false"
+            qrRegister=JSON.stringify(qrRegister)
+            fs.writeFileSync('./qrCodes/QRCodeRegister.json', qrRegister)
+        }
+        else if (barcodePlayer=="CodeJoueur3"){
+            res.send(JSON.stringify({"Resultat":barcodePlayer,"AuthStatus":"AuthGranted"}));
+            //Change the status in the register
+            qrRegister.qrCode3="false"
+            qrRegister=JSON.stringify(qrRegister)
+            fs.writeFileSync('./qrCodes/QRCodeRegister.json', qrRegister)
+        }
+        else if (barcodePlayer=="CodeJoueur4"){
+            res.send(JSON.stringify({"Resultat":barcodePlayer,"AuthStatus":"AuthGranted"}));
+            //Change the status in the register
+            qrRegister.qrCode4="false"
+            qrRegister=JSON.stringify(qrRegister)
+            fs.writeFileSync('./qrCodes/QRCodeRegister.json', qrRegister)
+        }
+        else {
+            res.send(JSON.stringify({ "Resultat": barcodePlayer, "AuthStatus": "AuthFailed" }));
+        }
+        
+        /*
         if (barcodePlayer1=="CodeJoueur1Complique") {
         res.send(JSON.stringify({"Resultat":barcodePlayer1,"AuthStatus":"AuthGranted"}));
         }
         else {
         res.send(JSON.stringify({"Resultat":barcodePlayer1,"AuthStatus":"AuthFailed"}));
-        }
-        console.log('barcode reçu :'+ barcodePlayer1)
+        }*/
+        console.log('barcode reçu :'+ barcodePlayer)
         });
 
 
