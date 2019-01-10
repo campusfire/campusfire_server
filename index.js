@@ -191,7 +191,7 @@ module.exports = (logger) => {
 
     app.post('/authenticationPlayer1',(req,res) => {
         var barcodePlayer=req.body.barcodeSent;
-        let qrRegister=fs.readFileSync('./qrCodes/QRCodeRegister.json');
+        let rawQrRegister=fs.readFileSync('./qrCodes/QRCodeRegister.json');
         qrRegister=JSON.parse(rawQrRegister);
         res.setHeader('Content-Type', 'application/json');
         if (barcodePlayer=="CodeJoueur1"){
