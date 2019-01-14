@@ -195,28 +195,28 @@ module.exports = (logger) => {
         qrRegister=JSON.parse(rawQrRegister);
         res.setHeader('Content-Type', 'application/json');
         if (barcodePlayer=="CodeJoueur1"){
-            res.send(JSON.stringify({"Resultat":barcodePlayer,"AuthStatus":"AuthGranted"}));
+            res.send(JSON.stringify({"Resultat":barcodePlayer,"AuthStatus":"AuthGranted","Player":"Player 1"}));
             //Change the status in the register
             qrRegister.qrCode1="false"
             qrRegister=JSON.stringify(qrRegister)
             fs.writeFileSync('./qrCodes/QRCodeRegister.json', qrRegister)
         }
         else if (barcodePlayer=="CodeJoueur2"){
-            res.send(JSON.stringify({"Resultat":barcodePlayer,"AuthStatus":"AuthGranted"}));
+            res.send(JSON.stringify({"Resultat":barcodePlayer,"AuthStatus":"AuthGranted","Player":"Player 2"}));
             //Change the status in the register
             qrRegister.qrCode2="false"
             qrRegister=JSON.stringify(qrRegister)
             fs.writeFileSync('./qrCodes/QRCodeRegister.json', qrRegister)
         }
         else if (barcodePlayer=="CodeJoueur3"){
-            res.send(JSON.stringify({"Resultat":barcodePlayer,"AuthStatus":"AuthGranted"}));
+            res.send(JSON.stringify({"Resultat":barcodePlayer,"AuthStatus":"AuthGranted","Player":"Player 3"}));
             //Change the status in the register
             qrRegister.qrCode3="false"
             qrRegister=JSON.stringify(qrRegister)
             fs.writeFileSync('./qrCodes/QRCodeRegister.json', qrRegister)
         }
         else if (barcodePlayer=="CodeJoueur4"){
-            res.send(JSON.stringify({"Resultat":barcodePlayer,"AuthStatus":"AuthGranted"}));
+            res.send(JSON.stringify({"Resultat":barcodePlayer,"AuthStatus":"AuthGranted","Player":"Player 4"}));
             //Change the status in the register
             qrRegister.qrCode4="false"
             qrRegister=JSON.stringify(qrRegister)
