@@ -136,8 +136,8 @@ module.exports = (logger) => {
 
     app.get("/display", (req, res) => {
         //get the value of the fields in QRCodeRegister and store them in variables
-        let rawQrRegister=fs.readFileSync('./qrCodes/QRCodeRegister.json')
-        let qrRegister=JSON.parse(rawQrRegister)
+        let rawQrRegister=fs.readFileSync('./qrCodes/QRCodeRegister.json');
+        let qrRegister=JSON.parse(rawQrRegister);
     
        /* 
         //check number of qrCodes in directory:
