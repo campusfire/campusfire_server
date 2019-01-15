@@ -170,13 +170,13 @@ module.exports = (logger) => {
                 res.render("handlePost",{qrRegister:qrRegister})
             }
             else if (numberOfImages==2){
-                res.render("handlePost2",qrRegister)
+                res.render("handlePost2",{qrRegister:qrRegister})
             }
             else if (numberOfImages==3){
-                res.render("handlePost3",qrRegister)
+                res.render("handlePost3",{qrRegister:qrRegister})
             }
             else if (numberOfImages==4){
-                res.render("handlePost4",qrRegister)
+                res.render("handlePost4",{qrRegister:qrRegister})
             }
         });
         
