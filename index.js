@@ -138,6 +138,8 @@ module.exports = (logger) => {
         //get the value of the fields in QRCodeRegister and store them in variables
         let rawQrRegister=fs.readFileSync('./qrCodes/QRCodeRegister.json');
         let qrRegister=JSON.parse(rawQrRegister);
+        console.log("register:")
+        console.log(rawQrRegister)
         //Reset the qr code value to 0 (which means it should display a new qr Code) if user connected for more than 1 minute
         if (qrRegister.qrCode1-Date.now()>60000){
             qrRegister.qrCode1=0
