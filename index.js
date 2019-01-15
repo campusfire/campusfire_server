@@ -138,7 +138,71 @@ module.exports = (logger) => {
         //get the value of the fields in QRCodeRegister and store them in variables
         let rawQrRegister=fs.readFileSync('./qrCodes/QRCodeRegister.json');
         let qrRegister=JSON.parse(rawQrRegister);
-    
+        //Reset the qr code value to 0 (which means it should display a new qr Code) if user connected for more than 1 minute
+        if (qrRegister.qrCode1-Date.now()>60000){
+            qrRegister.qrCode1=0
+            //Generate a new qrCode
+            //TODO make a separate function to generate qr
+            var download = function(uri, filename, callback){
+                request.head(uri, function(err, res, body){
+                console.log('content-type:', res.headers['content-type']);
+                console.log('content-length:', res.headers['content-length']);
+            
+                request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+                });
+            };
+            download('http://api.qrserver.com/v1/create-qr-code/?data=CodeJoueur1&size=100x100&color=013668&bgcolor=ffffff', './qrCodes/qrCode1.png', function(){
+            console.log('Qr Code 1 (blue) generated');
+            });
+        }
+        if (qrRegister.qrCode2-Date.now()>60000){
+            qrRegister.qrCode2=0
+            //Generate a new qrCode
+            //TODO make a separate function to generate qr
+            var download = function(uri, filename, callback){
+                request.head(uri, function(err, res, body){
+                console.log('content-type:', res.headers['content-type']);
+                console.log('content-length:', res.headers['content-length']);
+            
+                request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+                });
+            };
+            download('http://api.qrserver.com/v1/create-qr-code/?data=CodeJoueur2&size=100x100&color=d40000&bgcolor=ffffff', './qrCodes/qrCode2.png', function(){
+            console.log('Qr Code 2 (red) generated');
+            });
+        }
+        if (qrRegister.qrCode3-Date.now()>60000){
+            qrRegister.qrCode3=0
+            //Generate a new qrCode
+            //TODO make a separate function to generate qr
+            var download = function(uri, filename, callback){
+                request.head(uri, function(err, res, body){
+                console.log('content-type:', res.headers['content-type']);
+                console.log('content-length:', res.headers['content-length']);
+            
+                request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+                });
+            };
+            download('http://api.qrserver.com/v1/create-qr-code/?data=CodeJoueur3&size=100x100&color=00b200&bgcolor=ffffff', './qrCodes/qrCode3.png', function(){
+            console.log('Qr Code 3 (green) generated');
+            });
+        }
+        if (qrRegister.qrCode4-Date.now()>60000){
+            qrRegister.qrCode4=0
+            //Generate a new qrCode
+            //TODO make a separate function to generate qr
+            var download = function(uri, filename, callback){
+                request.head(uri, function(err, res, body){
+                console.log('content-type:', res.headers['content-type']);
+                console.log('content-length:', res.headers['content-length']);
+            
+                request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+                });
+            };
+            download('http://api.qrserver.com/v1/create-qr-code/?data=CodeJoueur4&size=100x100&color=7500c0&bgcolor=ffffff', './qrCodes/qrCode4.png', function(){
+            console.log('Qr Code 4 (purple) generated');
+            });
+        }
        /* 
         //check number of qrCodes in directory:
         var numberOfCodes=0;
