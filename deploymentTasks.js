@@ -14,7 +14,7 @@ module.exports={
             });
         };
         //blue (player 1)
-        download('http://api.qrserver.com/v1/create-qr-code/?data=CodeJoueur1Complique&size=100x100&color=013668&bgcolor=ffffff', './qrCodes/qrCode1.png', function(){
+        download('http://api.qrserver.com/v1/create-qr-code/?data=CodeJoueur1&size=100x100&color=013668&bgcolor=ffffff', './qrCodes/qrCode1.png', function(){
         console.log('Qr Code 1 (blue) generated');
         });
         //red (player 2)
@@ -32,11 +32,17 @@ module.exports={
     },
     //Generate the register corresponding to the 4 unscanned qr codes
     generateRegisterForQrCodes : function (){
+        // let myJsonData={
+        //     qrCode1: "true",
+        //     qrCode2: "true",
+        //     qrCode3: "true",
+        //     qrCode4: "true",
+        // }
         let myJsonData={
-            qrCode1: "true",
-            qrCode2: "true",
-            qrCode3: "true",
-            qrCode4: "true",
+            qrCode1: 0,
+            qrCode2: 0,
+            qrCode3: 0,
+            qrCode4: 0,
         }
         myJsonData=JSON.stringify(myJsonData)
         fs.writeFileSync('./qrCodes/QRCodeRegister.json', myJsonData)

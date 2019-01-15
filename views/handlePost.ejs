@@ -42,22 +42,22 @@
 
         <% include partials/table.ejs %>
 
-        <%if (qrRegister.qrCode1 =="true") { %> 
+        <%if (qrRegister.qrCode1 ==0) { %> 
         <img style ="display: block;margin-right: 10px;margin-bottom: 10px;max-height: 100px;max-width: 100px" src="/qrCodes/qrCode1.png"/>
         <% } else { %>
         <img style ="display: block;margin-right: 10px;margin-bottom: 10px;max-height: 100px;max-width: 100px" src="/qrCodes/player1.jpg"/>
         <% } %>
-        <%if (qrRegister.qrCode2 =="true") { %>
+        <%if (qrRegister.qrCode2 ==0) { %>
         <img style="display: block;margin-right: 10px;margin-bottom: 10px;max-height: 100px;max-width: 100px" src="/qrCodes/qrCode2.png" />
         <% } else { %>
         <img style="display: block;margin-right: 10px;margin-bottom: 10px;max-height: 100px;max-width: 100px" src="/qrCodes/player2.jpg" />
         <% } %>
-        <%if (qrRegister.qrCode3 =="true") { %> 
+        <%if (qrRegister.qrCode3 ==0) { %> 
         <img style ="display: block;margin-right: 10px;margin-bottom: 10px;max-height: 100px;max-width: 100px" src="/qrCodes/qrCode3.png"/>
         <% } else { %>
         <img style="display: block;margin-right: 10px;margin-bottom: 10px;max-height: 100px;max-width: 100px" src="/qrCodes/player3.jpg" />
         <% } %>
-        <%if (qrRegister.qrCode4 =="true") { %> 
+        <%if (qrRegister.qrCode4 ==0) { %> 
         <img style ="display: block;margin-right: 10px;margin-bottom: 10px;max-height: 100px;max-width: 100px" src="/qrCodes/qrCode4.png"/>
         <% } else { %>
         <img style="display: block;margin-right: 10px;margin-bottom: 10px;max-height: 100px;max-width: 100px" src="/qrCodes/player4.jpg" />

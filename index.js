@@ -178,15 +178,12 @@ module.exports = (logger) => {
             else if (numberOfImages==4){
                 res.render("handlePost4",{qrRegister:qrRegister})
             }
-        });
-        
-        
+        }); 
     });
 
     app.get('/home',(req,res)=>{
         
         res.render("home")
-
     });
 
     app.post('/authenticationPlayer1',(req,res) => {
@@ -197,28 +194,29 @@ module.exports = (logger) => {
         if (barcodePlayer=="CodeJoueur1"){
             res.send(JSON.stringify({"Resultat":barcodePlayer,"AuthStatus":"AuthGranted","Player":"Player 1"}));
             //Change the status in the register
-            qrRegister.qrCode1="false"
+            qrRegister.qrCode1=Date.now();
+            print(qrRegister)
             qrRegister=JSON.stringify(qrRegister)
             fs.writeFileSync('./qrCodes/QRCodeRegister.json', qrRegister)
         }
         else if (barcodePlayer=="CodeJoueur2"){
             res.send(JSON.stringify({"Resultat":barcodePlayer,"AuthStatus":"AuthGranted","Player":"Player 2"}));
             //Change the status in the register
-            qrRegister.qrCode2="false"
+            qrRegister.qrCode2=Date.now();
             qrRegister=JSON.stringify(qrRegister)
             fs.writeFileSync('./qrCodes/QRCodeRegister.json', qrRegister)
         }
         else if (barcodePlayer=="CodeJoueur3"){
             res.send(JSON.stringify({"Resultat":barcodePlayer,"AuthStatus":"AuthGranted","Player":"Player 3"}));
             //Change the status in the register
-            qrRegister.qrCode3="false"
+            qrRegister.qrCode3=Date.now();
             qrRegister=JSON.stringify(qrRegister)
             fs.writeFileSync('./qrCodes/QRCodeRegister.json', qrRegister)
         }
         else if (barcodePlayer=="CodeJoueur4"){
             res.send(JSON.stringify({"Resultat":barcodePlayer,"AuthStatus":"AuthGranted","Player":"Player 4"}));
             //Change the status in the register
-            qrRegister.qrCode4="false"
+            qrRegister.qrCode4=Date.now();
             qrRegister=JSON.stringify(qrRegister)
             fs.writeFileSync('./qrCodes/QRCodeRegister.json', qrRegister)
         }
