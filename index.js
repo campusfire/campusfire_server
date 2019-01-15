@@ -145,7 +145,7 @@ module.exports = (logger) => {
         console.log("Difference2")
         console.log(qrRegister.qrCode2-Date.now())
         //Reset the qr code value to 0 (which means it should display a new qr Code) if user connected for more than 1 minute
-        if (qrRegister.qrCode1-Date.now()>60000){
+        if (Date.now()-qrRegister.qrCode1>60000){
             qrRegister.qrCode1=0
             //Generate a new qrCode
             //TODO make a separate function to generate qr
@@ -161,7 +161,7 @@ module.exports = (logger) => {
             console.log('Qr Code 1 (blue) generated');
             });
         }
-        if (qrRegister.qrCode2-Date.now()>60000){
+        if (Date.now()-qrRegister.qrCode2>60000){
             qrRegister.qrCode2=0
             //Generate a new qrCode
             //TODO make a separate function to generate qr
@@ -177,7 +177,7 @@ module.exports = (logger) => {
             console.log('Qr Code 2 (red) generated');
             });
         }
-        if (qrRegister.qrCode3-Date.now()>60000){
+        if (Date.now()-qrRegister.qrCode3>60000){
             qrRegister.qrCode3=0
             //Generate a new qrCode
             //TODO make a separate function to generate qr
@@ -193,7 +193,7 @@ module.exports = (logger) => {
             console.log('Qr Code 3 (green) generated');
             });
         }
-        if (qrRegister.qrCode4-Date.now()>60000){
+        if (Date.now()-qrRegister.qrCode4>60000){
             qrRegister.qrCode4=0
             //Generate a new qrCode
             //TODO make a separate function to generate qr
