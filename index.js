@@ -96,7 +96,7 @@ module.exports = (logger) => {
                             .contentType("text/plain")
                             .end("Only .jpg files are allowed!");
                         });
-                        }
+                    }
                 }
                 catch(err){
                     logger.error("Error:" + err.stringify);
@@ -138,10 +138,6 @@ module.exports = (logger) => {
         //get the value of the fields in QRCodeRegister and store them in variables
         let rawQrRegister=fs.readFileSync('./qrCodes/QRCodeRegister.json');
         let qrRegister=JSON.parse(rawQrRegister);
-        console.log("register:")
-        console.log(rawQrRegister)
-        console.log("Mydate")
-        console.log(Date.now())
         console.log("Difference2")
         console.log(qrRegister.qrCode2-Date.now())
         //Reset the qr code value to 0 (which means it should display a new qr Code) if user connected for more than 1 minute
