@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'prod';
+
 //Define port
 const config = require('./config');
 

@@ -9,6 +9,7 @@ const reload = require("reload");
 const http = require("http").Server(app);
 const qrcode=require("qrcode-generator");
 const request=require("request");
+const config = require('./config');
 
 var io=require('socket.io')(http);
 
@@ -55,23 +56,23 @@ module.exports = (logger) => {
             fs.readdir(dir, (err, files) => {
                 numberOfImages=files.length;
                 if (numberOfImages==1){
-                    targetPath = path.join(__dirname, "./uploads/image.jpg"); 
+                    targetPath = path.join(__dirname, "./uploads/image.jpg");
                 }
                 else if(numberOfImages==2){
-                    targetPath = path.join(__dirname, "./uploads/image2.jpg"); 
+                    targetPath = path.join(__dirname, "./uploads/image2.jpg");
                 }
                 else if(numberOfImages==3){
-                    targetPath = path.join(__dirname, "./uploads/image3.jpg"); 
+                    targetPath = path.join(__dirname, "./uploads/image3.jpg");
                 }
                 else if(numberOfImages==4){
-                    targetPath = path.join(__dirname, "./uploads/image4.jpg"); 
+                    targetPath = path.join(__dirname, "./uploads/image4.jpg");
                 }
                 else if(numberOfImages==5){
                     oldestImageName=getOldestFileName(files)
                     console.log(oldestImageName);
-                    targetPath = path.join(__dirname, "./uploads/"+oldestImageName); 
+                    targetPath = path.join(__dirname, "./uploads/"+oldestImageName);
                 }
-                
+
                 try{
                     if (path.extname(req.file.originalname).toLowerCase() === ".jpg" || path.extname(req.file.originalname).toLowerCase() === ".jpeg" || path.extname(req.file.originalname).toLowerCase() === ".png")   {
                         //Emit socket.io message:
@@ -79,9 +80,9 @@ module.exports = (logger) => {
                         io.sockets.emit('refresh-msg', { data: 'whatever'});
                         fs.rename(tempPath, targetPath, err => {
                             if (err){
-                                console.log(err.stringify)  
-                            } 
-                            
+                                console.log(err.stringify)
+                            }
+
                             res
                             .status(200)
                             .contentType("text/plain")
@@ -90,7 +91,7 @@ module.exports = (logger) => {
                     } else {
                         fs.unlink(tempPath, err => {
                             if (err) return handleError(err, res);
-            
+
                             res
                             .status(403)
                             .contentType("text/plain")
@@ -102,8 +103,8 @@ module.exports = (logger) => {
                     logger.error("Error:" + err.stringify);
                 }
             });
-            
-            
+
+
         }
     );
 
@@ -111,7 +112,7 @@ module.exports = (logger) => {
     app.post('/postText',(req,res) => {
         var receivedText = req.body.sentText;
 
-        fs.appendFile('postedText.txt', receivedText+"\n", (err) => { //ajout d'une ligne au fichier d'écriture
+        fs.appendFile(config.textFile, receivedText+"\n", (err) => { //ajout d'une ligne au fichier d'écriture
             if (err) throw err;
         });
 
@@ -122,7 +123,7 @@ module.exports = (logger) => {
 
     //endpoint to serve postedText content
     app.get('/postedText',(req,res) => {
-        fs.readFile('postedText.txt', 'utf8', function(err, data) {
+        fs.readFile(config.textFile, 'utf8', function(err, data) {
             if (err) throw err;
             return res.end(data);
         });
@@ -153,7 +154,7 @@ module.exports = (logger) => {
                 request.head(uri, function(err, res, body){
                 console.log('content-type:', res.headers['content-type']);
                 console.log('content-length:', res.headers['content-length']);
-            
+
                 request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
                 });
             };
@@ -169,7 +170,7 @@ module.exports = (logger) => {
                 request.head(uri, function(err, res, body){
                 console.log('content-type:', res.headers['content-type']);
                 console.log('content-length:', res.headers['content-length']);
-            
+
                 request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
                 });
             };
@@ -185,7 +186,7 @@ module.exports = (logger) => {
                 request.head(uri, function(err, res, body){
                 console.log('content-type:', res.headers['content-type']);
                 console.log('content-length:', res.headers['content-length']);
-            
+
                 request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
                 });
             };
@@ -201,7 +202,7 @@ module.exports = (logger) => {
                 request.head(uri, function(err, res, body){
                 console.log('content-type:', res.headers['content-type']);
                 console.log('content-length:', res.headers['content-length']);
-            
+
                 request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
                 });
             };
@@ -209,7 +210,7 @@ module.exports = (logger) => {
             console.log('Qr Code 4 (purple) generated');
             });
         }
-       /* 
+       /*
         //check number of qrCodes in directory:
         var numberOfCodes=0;
         var targetPath="";
@@ -221,7 +222,7 @@ module.exports = (logger) => {
                     request.head(uri, function(err, res, body){
                     console.log('content-type:', res.headers['content-type']);
                     console.log('content-length:', res.headers['content-length']);
-                
+
                     request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
                     });
                 };
@@ -248,11 +249,11 @@ module.exports = (logger) => {
             else if (numberOfImages==4){
                 res.render("handlePost4",{qrRegister:qrRegister})
             }
-        }); 
+        });
     });
 
     app.get('/home',(req,res)=>{
-        
+
         res.render("home")
     });
 
@@ -293,7 +294,7 @@ module.exports = (logger) => {
         else {
             res.send(JSON.stringify({ "Resultat": barcodePlayer, "AuthStatus": "AuthFailed" }));
         }
-        
+
         /*
         if (barcodePlayer1=="CodeJoueur1Complique") {
         res.send(JSON.stringify({"Resultat":barcodePlayer1,"AuthStatus":"AuthGranted"}));
@@ -311,11 +312,11 @@ module.exports = (logger) => {
     });
 
     function getOldestFileName(files) {
-    
+
         // use underscore for min()
         return _.min(files, function (f) {
             var fullpath = path.join(dir, f);
-    
+
             // ctime = creation time is used
             // replace with mtime for modification time
         });

@@ -1,4 +1,4 @@
-process.env.NODE_ENV = 'test';
+process.env.NODE_ENV = 'env_test';
 
 const request = require('supertest');
 const config = require('../config');
@@ -11,9 +11,6 @@ let authenticatedUser
 
 beforeAll(async () => {
     authenticatedUser = await request.agent(app);
-});
-
-beforeEach(async () => {
     server = await app.listen(config.port, () => {
         //Generate 4 qr codes at the deployment of the app
         deploymentTaks.generateQRCodes();
@@ -22,11 +19,20 @@ beforeEach(async () => {
     });
 });
 
+afterAll(async () => {
+    await server.close();
+    console.log(`SERVER CLOSED`);
+});
+
+
 test('#GET main page /display ', (done) => {
     return authenticatedUser
         .get('/display')
         .expect(200, done);
 });
+
+
+
 
 
 
