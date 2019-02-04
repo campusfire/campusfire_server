@@ -3,6 +3,7 @@ let config = {
     port: process.env.PORT || 10410,
     baseUrl: process.env.BASE_URL || 'localhost',
     textFile: './tests/postedText.txt',
+    qrRegister: './tests/QRCodeRegister.json',
 };
 
 

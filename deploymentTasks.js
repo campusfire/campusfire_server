@@ -1,5 +1,6 @@
 const request=require('request')
 const fs = require("fs");
+const config = require('./config');
 
 
 module.exports={
@@ -9,7 +10,7 @@ module.exports={
             request.head(uri, function(err, res, body){
             console.log('content-type:', res.headers['content-type']);
             console.log('content-length:', res.headers['content-length']);
-        
+
             request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
             });
         };
@@ -45,6 +46,6 @@ module.exports={
             qrCode4: 0,
         }
         myJsonData=JSON.stringify(myJsonData)
-        fs.writeFileSync('./qrCodes/QRCodeRegister.json', myJsonData)
+        fs.writeFileSync(config.qrRegister, myJsonData)
     }
 }

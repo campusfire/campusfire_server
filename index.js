@@ -138,7 +138,7 @@ module.exports = (logger) => {
 
     app.get("/display", (req, res) => {
         //get the value of the fields in QRCodeRegister and store them in variables
-        let rawQrRegister=fs.readFileSync('./qrCodes/QRCodeRegister.json');
+        let rawQrRegister=fs.readFileSync(config.qrRegister);
         let qrRegister=JSON.parse(rawQrRegister);
         console.log("register:")
         console.log(rawQrRegister)
@@ -260,39 +260,43 @@ module.exports = (logger) => {
 
     app.post('/authenticationPlayer1',(req,res) => {
         var barcodePlayer=req.body.barcodeSent;
-        let rawQrRegister=fs.readFileSync('./qrCodes/QRCodeRegister.json');
+        let rawQrRegister=fs.readFileSync(config.qrRegister);
         qrRegister=JSON.parse(rawQrRegister);
         res.setHeader('Content-Type', 'application/json');
         if (barcodePlayer=="CodeJoueur1"){
+            res.status(200);
             res.send(JSON.stringify({"Resultat":barcodePlayer,"AuthStatus":"AuthGranted","Player":"Player 1"}));
             //Change the status in the register
             qrRegister.qrCode1=Date.now();
-            print(qrRegister)
             qrRegister=JSON.stringify(qrRegister)
-            fs.writeFileSync('./qrCodes/QRCodeRegister.json', qrRegister)
+            fs.writeFileSync(config.qrRegister, qrRegister)
         }
         else if (barcodePlayer=="CodeJoueur2"){
+            res.status(200);
             res.send(JSON.stringify({"Resultat":barcodePlayer,"AuthStatus":"AuthGranted","Player":"Player 2"}));
             //Change the status in the register
             qrRegister.qrCode2=Date.now();
             qrRegister=JSON.stringify(qrRegister)
-            fs.writeFileSync('./qrCodes/QRCodeRegister.json', qrRegister)
+            fs.writeFileSync(config.qrRegister, qrRegister)
         }
         else if (barcodePlayer=="CodeJoueur3"){
+            res.status(200);
             res.send(JSON.stringify({"Resultat":barcodePlayer,"AuthStatus":"AuthGranted","Player":"Player 3"}));
             //Change the status in the register
             qrRegister.qrCode3=Date.now();
             qrRegister=JSON.stringify(qrRegister)
-            fs.writeFileSync('./qrCodes/QRCodeRegister.json', qrRegister)
+            fs.writeFileSync(config.qrRegister, qrRegister)
         }
         else if (barcodePlayer=="CodeJoueur4"){
+            res.status(200);
             res.send(JSON.stringify({"Resultat":barcodePlayer,"AuthStatus":"AuthGranted","Player":"Player 4"}));
             //Change the status in the register
             qrRegister.qrCode4=Date.now();
             qrRegister=JSON.stringify(qrRegister)
-            fs.writeFileSync('./qrCodes/QRCodeRegister.json', qrRegister)
+            fs.writeFileSync(config.qrRegister, qrRegister)
         }
         else {
+            res.status(401);
             res.send(JSON.stringify({ "Resultat": barcodePlayer, "AuthStatus": "AuthFailed" }));
         }
 

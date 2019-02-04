@@ -8,14 +8,14 @@ const deploymentTaks=require('../deploymentTasks');
 const fs = require('fs');
 
 let server;
-let authenticatedUser;
+let unauthUser;
 
 beforeAll(async () => {
-    authenticatedUser = await request.agent(app);
+    unauthUser = await request.agent(app);
 
-    fs.appendFile('./tests/files/testImgText.txt', '', function (err) {
+    fs.appendFile(config.qrRegister, '', function (err) {
         if (err) throw err;
-        console.log('Fichier au format volontairement mauvais créé');
+        console.log('Faux QR Register créé', config.qrRegister);
     });
 
     server = await app.listen(config.port, () => {
@@ -27,23 +27,28 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-    fs.unlink('./tests/files/testImgText.txt', function (err) {
-        if (err) throw err;
-        console.log('Fichier au format volontairement mauvais supprimé');
-    });
 
     await server.close();
     await console.log(`SERVER CLOSED`);
 });
 
-test('#POST Wrong format /file-upload', (done) => {
-    authenticatedUser
-        .post('/file-upload')
-        .attach('Image', './tests/files/testImgText.txt')
-        .end((err, response) => {
-            expect(response.statusCode).toEqual(403);
-            done(err);
-        });
-
+describe('Test bad code for authentication', () => {
+    test('#POST /authenticationPlayer1', (done) => {
+        return unauthUser
+            .post('/authenticationPlayer1')
+            .send({barcodeSent:'wrongBarcode'})
+            .expect(401,done);
+    });
 });
+
+/*describe('Test good code for authentication', () => {
+    test('#POST /authenticationPlayer1', (done) => {
+        return unauthUser
+            .post('/authenticationPlayer1')
+            .send({barcodeSent:'CodeJoueur1'})
+            .expect(200,done);
+    });
+});*/
+
+
 
