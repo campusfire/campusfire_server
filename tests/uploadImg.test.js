@@ -13,9 +13,9 @@ let authenticatedUser;
 beforeAll(async () => {
     authenticatedUser = await request.agent(app);
 
-    fs.appendFile(config.textFile, '', function (err) {
+    fs.appendFile('./tests/files/testImgText.txt', '', function (err) {
         if (err) throw err;
-        console.log('Fichier text de test créé', config.textFile);
+        console.log('Fichier au format volontairement mauvais créé');
     });
 
     server = await app.listen(config.port, () => {
@@ -27,26 +27,25 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-    fs.unlink(config.textFile, function (err) {
+    fs.unlink('./tests/files/testImgText.txt', function (err) {
         if (err) throw err;
-        console.log('Fichier text de test supprimé', config.textFile);
+        console.log('Fichier au format volontairement mauvais supprimé');
     });
 
     await server.close();
     await console.log(`SERVER CLOSED`);
 });
 
-test('#GET /postedText', (done) => {
-    return authenticatedUser
-        .get('/postedText')
-        .expect(200, done);
-});
+test('#POST Wrong format /file-upload', (done) => {
+    authenticatedUser
+        .post('/file-upload')
+        .attach('Image', './tests/files/testImgText.txt')
+        .end((err, response) => {
+            expect(response.statusCode).toEqual(403);
+            done(err);
+        });
 
-test('#POST /postText', (done) => {
-    return authenticatedUser
-        .post('/postText')
-        .send({sentText:'ligne test'})
-        .expect('Content-Type', /json/)
-        .expect(200,done);
+
+
 });
 

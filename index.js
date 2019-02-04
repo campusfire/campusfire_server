@@ -116,6 +116,7 @@ module.exports = (logger) => {
             if (err) throw err;
         });
 
+        res.status(200);
         res.setHeader('Content-Type', 'application/json'); //formulation d'une confirmation
         res.send(JSON.stringify({"Resultat":"text received"}));
         console.log("text received");
