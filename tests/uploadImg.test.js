@@ -15,7 +15,7 @@ beforeAll(async () => {
 
     fs.appendFile('./tests/files/testImgText.txt', '', function (err) {
         if (err) throw err;
-        console.log('Fichier au format volontairement mauvais créé');
+        console.log('File with voluntary wrong format created');
     });
 
     server = await app.listen(config.port, () => {
@@ -29,7 +29,7 @@ beforeAll(async () => {
 afterAll(async () => {
     fs.unlink('./tests/files/testImgText.txt', function (err) {
         if (err) throw err;
-        console.log('Fichier au format volontairement mauvais supprimé');
+        console.log('File with voluntary wrong format deleted');
     });
 
     await server.close();

@@ -68,7 +68,7 @@ module.exports = (logger) => {
                     targetPath = path.join(__dirname, "./uploads/image4.jpg");
                 }
                 else if(numberOfImages==5){
-                    oldestImageName=getOldestFileName(files)
+                    oldestImageName=getOldestFileName(files);
                     console.log(oldestImageName);
                     targetPath = path.join(__dirname, "./uploads/"+oldestImageName);
                 }
@@ -329,11 +329,4 @@ module.exports = (logger) => {
 
     return app;
 
-}
-// //Define port
-// const PORT = process.env.PORT || 10410;
-
-// //Run the server using express
-// app.listen(PORT, () => {
-//     console.log(`Server listening on port ${PORT}...`);
-// });
+};

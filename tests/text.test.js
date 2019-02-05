@@ -15,7 +15,7 @@ beforeAll(async () => {
 
     fs.appendFile(config.textFile, '', function (err) {
         if (err) throw err;
-        console.log('Fichier text de test créé', config.textFile);
+        console.log('Test text file created', config.textFile);
     });
 
     server = await app.listen(config.port, () => {
@@ -29,7 +29,7 @@ beforeAll(async () => {
 afterAll(async () => {
     fs.unlink(config.textFile, function (err) {
         if (err) throw err;
-        console.log('Fichier text de test supprimé', config.textFile);
+        console.log('Test text file deleted', config.textFile);
     });
 
     await server.close();

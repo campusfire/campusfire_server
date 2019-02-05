@@ -15,7 +15,7 @@ beforeAll(async () => {
 
     fs.appendFile(config.qrRegister, '', function (err) {
         if (err) throw err;
-        console.log('Faux QR Register créé', config.qrRegister);
+        console.log('Fake QR Register updated', config.qrRegister);
     });
 
     server = await app.listen(config.port, () => {
@@ -41,14 +41,14 @@ describe('Test bad code for authentication', () => {
     });
 });
 
-/*describe('Test good code for authentication', () => {
+describe('Test good code for authentication', () => {
     test('#POST /authenticationPlayer1', (done) => {
         return unauthUser
             .post('/authenticationPlayer1')
             .send({barcodeSent:'CodeJoueur1'})
             .expect(200,done);
     });
-});*/
+});
 
 
 
