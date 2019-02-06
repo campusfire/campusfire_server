@@ -3,13 +3,14 @@ const bodyParser= require('body-parser');
 const app = express();
 const multer = require("multer");
 const path = require("path");
-const _=require("underscore")
 const fs = require("fs");
 const reload = require("reload");
 const http = require("http").Server(app);
 const qrcode=require("qrcode-generator");
 const request=require("request");
 const config = require('./config');
+const fct = require('./getOldestFileName');
+const _=require("underscore");
 
 var io=require('socket.io')(http);
 
@@ -317,13 +318,13 @@ module.exports = (logger) => {
     });
 
     function getOldestFileName(files) {
-
         // use underscore for min()
         return _.min(files, function (f) {
             var fullpath = path.join(dir, f);
 
             // ctime = creation time is used
             // replace with mtime for modification time
+            return fs.statSync(fullpath).ctime;
         });
     }
 
