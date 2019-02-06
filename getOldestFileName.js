@@ -1,6 +1,7 @@
 const _=require("underscore");
 const path = require("path");
 const dir = './uploads';
+const fs = require("fs");
 
 module.exports={
 
@@ -11,6 +12,7 @@ module.exports={
 
             // ctime = creation time is used
             // replace with mtime for modification time
+            return fs.statSync(fullpath).ctime;
         });
     }
 

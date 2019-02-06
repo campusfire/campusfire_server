@@ -69,7 +69,7 @@ module.exports = (logger) => {
                     targetPath = path.join(__dirname, "./uploads/image4.jpg");
                 }
                 else if(numberOfImages==5){
-                    oldestImageName=getOldestFileName(files);
+                    oldestImageName=fct.getOldestFileName(files);
                     console.log(oldestImageName);
                     targetPath = path.join(__dirname, "./uploads/"+oldestImageName);
                 }
@@ -312,17 +312,6 @@ module.exports = (logger) => {
         res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify({"Resultat":"Bonjour depuis agastache"}));
     });
-
-    function getOldestFileName(files) {
-        // use underscore for min()
-        return _.min(files, function (f) {
-            var fullpath = path.join(dir, f);
-
-            // ctime = creation time is used
-            // replace with mtime for modification time
-            return fs.statSync(fullpath).ctime;
-        });
-    }
 
     return app;
 
