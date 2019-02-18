@@ -9,6 +9,7 @@ const reload = require("reload");
 const http = require("http").Server(app);
 const qrcode=require("qrcode-generator");
 const request=require("request");
+const PORT = 10410;
 
 var io=require('socket.io')(http);
 
@@ -128,7 +129,20 @@ module.exports = (logger) => {
         });
     });
 
-
+    app.get('/testsocket',(req,res) => {
+        res.render('testSockets')
+    });
+    
+    // io.on('connection', function(socket){
+    //     socket.on('chat message', function(msg){
+    //       io.emit('chat message', msg);
+    //     });
+    // });
+    io.on('connection', function(socket){
+        socket.on('chat message', function(msg){
+          io.emit('chat message', msg);
+        });
+    });
     //When I receive the socket message:
     io.on('refresh-msg', function (socket) {
         console.log(socket);
@@ -248,7 +262,6 @@ module.exports = (logger) => {
     });
 
     app.get('/home',(req,res)=>{
-        
         res.render("home")
     });
 
@@ -316,10 +329,14 @@ module.exports = (logger) => {
             // replace with mtime for modification time
         });
     }
+    
 
-    return app;
+    return http;
 
 }
+
+
+
 // //Define port
 // const PORT = process.env.PORT || 10410;
 
