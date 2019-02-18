@@ -3,13 +3,14 @@ const bodyParser= require('body-parser');
 const app = express();
 const multer = require("multer");
 const path = require("path");
-const _=require("underscore")
 const fs = require("fs");
 const reload = require("reload");
 const http = require("http").Server(app);
 const qrcode=require("qrcode-generator");
 const request=require("request");
-const PORT = 10410;
+const config = require('./config');
+const fct = require('./getOldestFileName');
+const _=require("underscore");
 
 var io=require('socket.io')(http);
 
@@ -56,23 +57,23 @@ module.exports = (logger) => {
             fs.readdir(dir, (err, files) => {
                 numberOfImages=files.length;
                 if (numberOfImages==1){
-                    targetPath = path.join(__dirname, "./uploads/image.jpg"); 
+                    targetPath = path.join(__dirname, "./uploads/image.jpg");
                 }
                 else if(numberOfImages==2){
-                    targetPath = path.join(__dirname, "./uploads/image2.jpg"); 
+                    targetPath = path.join(__dirname, "./uploads/image2.jpg");
                 }
                 else if(numberOfImages==3){
-                    targetPath = path.join(__dirname, "./uploads/image3.jpg"); 
+                    targetPath = path.join(__dirname, "./uploads/image3.jpg");
                 }
                 else if(numberOfImages==4){
-                    targetPath = path.join(__dirname, "./uploads/image4.jpg"); 
+                    targetPath = path.join(__dirname, "./uploads/image4.jpg");
                 }
                 else if(numberOfImages==5){
-                    oldestImageName=getOldestFileName(files)
+                    oldestImageName=fct.getOldestFileName(files);
                     console.log(oldestImageName);
-                    targetPath = path.join(__dirname, "./uploads/"+oldestImageName); 
+                    targetPath = path.join(__dirname, "./uploads/"+oldestImageName);
                 }
-                
+
                 try{
                     if (path.extname(req.file.originalname).toLowerCase() === ".jpg" || path.extname(req.file.originalname).toLowerCase() === ".jpeg" || path.extname(req.file.originalname).toLowerCase() === ".png")   {
                         //Emit socket.io message:
@@ -80,9 +81,9 @@ module.exports = (logger) => {
                         io.sockets.emit('refresh-msg', { data: 'whatever'});
                         fs.rename(tempPath, targetPath, err => {
                             if (err){
-                                console.log(err.stringify)  
-                            } 
-                            
+                                console.log(err.stringify)
+                            }
+
                             res
                             .status(200)
                             .contentType("text/plain")
@@ -91,7 +92,7 @@ module.exports = (logger) => {
                     } else {
                         fs.unlink(tempPath, err => {
                             if (err) return handleError(err, res);
-            
+
                             res
                             .status(403)
                             .contentType("text/plain")
@@ -103,8 +104,8 @@ module.exports = (logger) => {
                     logger.error("Error:" + err.stringify);
                 }
             });
-            
-            
+
+
         }
     );
 
@@ -112,10 +113,11 @@ module.exports = (logger) => {
     app.post('/postText',(req,res) => {
         var receivedText = req.body.sentText;
 
-        fs.appendFile('postedText.txt', receivedText+"\n", (err) => { //ajout d'une ligne au fichier d'écriture
+        fs.appendFile(config.textFile, receivedText+"\n", (err) => { //ajout d'une ligne au fichier d'écriture
             if (err) throw err;
         });
 
+        res.status(200);
         res.setHeader('Content-Type', 'application/json'); //formulation d'une confirmation
         res.send(JSON.stringify({"Resultat":"text received"}));
         console.log("text received");
@@ -123,7 +125,7 @@ module.exports = (logger) => {
 
     //endpoint to serve postedText content
     app.get('/postedText',(req,res) => {
-        fs.readFile('postedText.txt', 'utf8', function(err, data) {
+        fs.readFile(config.textFile, 'utf8', function(err, data) {
             if (err) throw err;
             return res.end(data);
         });
@@ -150,7 +152,7 @@ module.exports = (logger) => {
 
     app.get("/display", (req, res) => {
         //get the value of the fields in QRCodeRegister and store them in variables
-        let rawQrRegister=fs.readFileSync('./qrCodes/QRCodeRegister.json');
+        let rawQrRegister=fs.readFileSync(config.qrRegister);
         let qrRegister=JSON.parse(rawQrRegister);
         console.log("Difference2")
         console.log(qrRegister.qrCode2-Date.now())
@@ -163,7 +165,7 @@ module.exports = (logger) => {
                 request.head(uri, function(err, res, body){
                 console.log('content-type:', res.headers['content-type']);
                 console.log('content-length:', res.headers['content-length']);
-            
+
                 request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
                 });
             };
@@ -179,7 +181,7 @@ module.exports = (logger) => {
                 request.head(uri, function(err, res, body){
                 console.log('content-type:', res.headers['content-type']);
                 console.log('content-length:', res.headers['content-length']);
-            
+
                 request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
                 });
             };
@@ -195,7 +197,7 @@ module.exports = (logger) => {
                 request.head(uri, function(err, res, body){
                 console.log('content-type:', res.headers['content-type']);
                 console.log('content-length:', res.headers['content-length']);
-            
+
                 request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
                 });
             };
@@ -211,7 +213,7 @@ module.exports = (logger) => {
                 request.head(uri, function(err, res, body){
                 console.log('content-type:', res.headers['content-type']);
                 console.log('content-length:', res.headers['content-length']);
-            
+
                 request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
                 });
             };
@@ -219,7 +221,7 @@ module.exports = (logger) => {
             console.log('Qr Code 4 (purple) generated');
             });
         }
-       /* 
+       /*
         //check number of qrCodes in directory:
         var numberOfCodes=0;
         var targetPath="";
@@ -231,7 +233,7 @@ module.exports = (logger) => {
                     request.head(uri, function(err, res, body){
                     console.log('content-type:', res.headers['content-type']);
                     console.log('content-length:', res.headers['content-length']);
-                
+
                     request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
                     });
                 };
@@ -258,7 +260,7 @@ module.exports = (logger) => {
             else if (numberOfImages==4){
                 res.render("handlePost4",{qrRegister:qrRegister})
             }
-        }); 
+        });
     });
 
     app.get('/home',(req,res)=>{
@@ -267,42 +269,46 @@ module.exports = (logger) => {
 
     app.post('/authenticationPlayer1',(req,res) => {
         var barcodePlayer=req.body.barcodeSent;
-        let rawQrRegister=fs.readFileSync('./qrCodes/QRCodeRegister.json');
+        let rawQrRegister=fs.readFileSync(config.qrRegister);
         qrRegister=JSON.parse(rawQrRegister);
         res.setHeader('Content-Type', 'application/json');
         if (barcodePlayer=="CodeJoueur1"){
+            res.status(200);
             res.send(JSON.stringify({"Resultat":barcodePlayer,"AuthStatus":"AuthGranted","Player":"Player 1"}));
             //Change the status in the register
             qrRegister.qrCode1=Date.now();
-            print(qrRegister)
             qrRegister=JSON.stringify(qrRegister)
-            fs.writeFileSync('./qrCodes/QRCodeRegister.json', qrRegister)
+            fs.writeFileSync(config.qrRegister, qrRegister)
         }
         else if (barcodePlayer=="CodeJoueur2"){
+            res.status(200);
             res.send(JSON.stringify({"Resultat":barcodePlayer,"AuthStatus":"AuthGranted","Player":"Player 2"}));
             //Change the status in the register
             qrRegister.qrCode2=Date.now();
             qrRegister=JSON.stringify(qrRegister)
-            fs.writeFileSync('./qrCodes/QRCodeRegister.json', qrRegister)
+            fs.writeFileSync(config.qrRegister, qrRegister)
         }
         else if (barcodePlayer=="CodeJoueur3"){
+            res.status(200);
             res.send(JSON.stringify({"Resultat":barcodePlayer,"AuthStatus":"AuthGranted","Player":"Player 3"}));
             //Change the status in the register
             qrRegister.qrCode3=Date.now();
             qrRegister=JSON.stringify(qrRegister)
-            fs.writeFileSync('./qrCodes/QRCodeRegister.json', qrRegister)
+            fs.writeFileSync(config.qrRegister, qrRegister)
         }
         else if (barcodePlayer=="CodeJoueur4"){
+            res.status(200);
             res.send(JSON.stringify({"Resultat":barcodePlayer,"AuthStatus":"AuthGranted","Player":"Player 4"}));
             //Change the status in the register
             qrRegister.qrCode4=Date.now();
             qrRegister=JSON.stringify(qrRegister)
-            fs.writeFileSync('./qrCodes/QRCodeRegister.json', qrRegister)
+            fs.writeFileSync(config.qrRegister, qrRegister)
         }
         else {
+            res.status(401);
             res.send(JSON.stringify({ "Resultat": barcodePlayer, "AuthStatus": "AuthFailed" }));
         }
-        
+
         /*
         if (barcodePlayer1=="CodeJoueur1Complique") {
         res.send(JSON.stringify({"Resultat":barcodePlayer1,"AuthStatus":"AuthGranted"}));
@@ -319,28 +325,6 @@ module.exports = (logger) => {
         res.send(JSON.stringify({"Resultat":"Bonjour depuis agastache"}));
     });
 
-    function getOldestFileName(files) {
-    
-        // use underscore for min()
-        return _.min(files, function (f) {
-            var fullpath = path.join(dir, f);
-    
-            // ctime = creation time is used
-            // replace with mtime for modification time
-        });
-    }
-    
-
     return http;
 
-}
-
-
-
-// //Define port
-// const PORT = process.env.PORT || 10410;
-
-// //Run the server using express
-// app.listen(PORT, () => {
-//     console.log(`Server listening on port ${PORT}...`);
-// });
+};
