@@ -313,6 +313,10 @@ module.exports = (logger) => {
         res.send(JSON.stringify({"Resultat":"Bonjour depuis agastache"}));
     });
 
+    app.get('/drawing', (req, res) => {
+        res.render("drawing");
+    });
+
     return app;
 
 };
