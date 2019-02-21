@@ -145,6 +145,23 @@ module.exports = (logger) => {
         socket.on('chat message', function(msg){
           io.emit('chat message', msg);
         });
+
+        console.log("incoming connection");
+
+        // first send the history to the new client
+        for (var i in line_history) {
+            socket.emit('draw_line', { line: line_history[i] } );
+        }
+
+        // add handler for message type "draw_line".
+        socket.on('draw_line', function (data) {
+            // add received line to history
+            line_history.push(data.line);
+            // send line to all clients
+            io.emit('draw_line', { line: data.line });
+        });
+
+
     });
     //When I receive the socket message:
     io.on('refresh-msg', function (socket) {
