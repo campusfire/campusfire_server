@@ -34,6 +34,7 @@ module.exports = (logger) => {
     app.use("/uploads", express.static(__dirname + '/uploads'));
     app.use("/qrCodes", express.static(__dirname + '/qrCodes'));
     app.use("/images", express.static(__dirname + '/images'));
+    app.use(express.static(path.join(__dirname, 'client')));
 
 
     app.post('/handlePost',(req,res) => {
