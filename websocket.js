@@ -28,9 +28,10 @@ module.exports= {
                 context.moveTo(line[0].x * width, line[0].y * height);
                 context.lineTo(line[1].x * width, line[1].y * height);
                 context.stroke();
-            }
+            })
 
-        console.log("eventHandler launched")
-    })
+            console.log("eventHandler launched")
+        })
+    }
 };
 
