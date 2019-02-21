@@ -21,7 +21,8 @@ const upload = multer({
     // Pour gérer des limitations sur ce qu'on accepte: https://github.com/expressjs/multer#limits
   });
 
-
+// array of all lines drawn
+var line_history = [];
 
 
 module.exports = (logger) => {

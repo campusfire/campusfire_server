@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
     socket.on('draw_line', function (data) {
         console.log("client received draw_line");
         var line = data.line;
+        console.log(data.line);
         context.beginPath();
         context.moveTo(line[0].x * width, line[0].y * height);
         context.lineTo(line[1].x * width, line[1].y * height);
