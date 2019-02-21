@@ -134,7 +134,7 @@ module.exports = (logger) => {
     app.get('/testsocket',(req,res) => {
         res.render('testSockets')
     });
-    
+
     // io.on('connection', function(socket){
     //     socket.on('chat message', function(msg){
     //       io.emit('chat message', msg);
@@ -323,6 +323,10 @@ module.exports = (logger) => {
     app.get('/', (req, res) => {
         res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify({"Resultat":"Bonjour depuis agastache"}));
+    });
+
+    app.get('/drawing',(req,res)=>{
+        res.render("drawing")
     });
 
     return http;
