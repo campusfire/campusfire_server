@@ -15,10 +15,9 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log("client received draw_line");
         var line = data.line;
         console.log(data.line);
-        console.log(line[0]);
         context.beginPath();
-        context.moveTo(JSON.parse(line[0]).x * width, JSON.parse(line[0]).y * height);
-        context.lineTo(JSON.parse(line[1]).x * width, JSON.parse(line[1]).y * height);
+        context.moveTo(JSON.parse(line).pos_prev.x * width, JSON.parse(line).pos_prev.y * height);
+        context.lineTo(JSON.parse(line).pos.x * width, JSON.parse(line).pos.y * height);
         context.stroke();
     });
 });
