@@ -10,7 +10,7 @@ module.exports= {
     // event-handler for new incoming connections
     eventHandler: function () {
         io.on('connection', function (socket) {
-            console.log("incoming connection");
+            console.log("incoming socket connection");
 
             // first send the history to the new client
             for (var i in line_history) {
