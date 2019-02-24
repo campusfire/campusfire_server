@@ -1,6 +1,6 @@
 let config = {
     env: 'prod',
-    port: 10410,
+    port: 10424,
     baseUrl: 'localhost',
     textFile: './postedText.txt',
     qrRegister: './qrCodes/QRCodeRegister.json',
