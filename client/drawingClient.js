@@ -21,4 +21,11 @@ document.addEventListener("DOMContentLoaded", function() {
         context.lineTo(data.line.pos.x * width, data.line.pos.y * height);
         context.stroke();
     });
+
+    // reset line received from server
+    socket.on('reset_line', function (data) {
+        console.log("reset drawing");
+        context.clearRect(0, 0, canvas.width, canvas.height);
+    });
+
 });

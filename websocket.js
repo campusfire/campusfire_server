@@ -23,6 +23,13 @@ module.exports.listen = function (app) {
             // send line to all clients
             io.emit('draw_line', { line: data.line });
         });
+
+        // add handler to reset the drawing.
+        socket.on('reset_line', function (data) {
+            line_history = [];
+            // send line to all clients
+            io.emit('reset_line');
+        });
     });
 
     return io;
