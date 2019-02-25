@@ -13,9 +13,10 @@ var server = http.listen(config.port, () => {
     //Generate 4 qr codes at the deployment of the app
     deploymentTaks.generateQRCodes();
     deploymentTaks.generateRegisterForQrCodes();
-    drawingWebsocket.eventHandler();
     console.log(`Server listening on port ${config.port}...`);
 });
+
+var io = require('./websocket').listen(http);
 
 // var io = socket(server)
 // io.on('connection', function(socket){
@@ -24,5 +25,8 @@ var server = http.listen(config.port, () => {
 //         io.sockets.emit('display', data)
 //     })
 // })
+
+
+
 
 
