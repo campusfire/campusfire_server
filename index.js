@@ -78,19 +78,19 @@ module.exports = (logger) => {
 
                 try{
                     if (path.extname(req.file.originalname).toLowerCase() === ".jpg" || path.extname(req.file.originalname).toLowerCase() === ".jpeg" || path.extname(req.file.originalname).toLowerCase() === ".png")   {
-                        //Emit socket.io message:
-                        //Peut etre plus élégant si j'arrive à faire passer directement l'image en binaire dans le message socket.io
-                        io.sockets.emit('refresh-msg', { data: 'whatever'});
+                        
                         fs.rename(tempPath, targetPath, err => {
                             if (err){
                                 console.log(err.stringify)
                             }
-
                             res
                             .status(200)
                             .contentType("text/plain")
                             .end("File uploaded!");
                         });
+                        //Emit socket.io message:
+                        //Peut etre plus élégant si j'arrive à faire passer directement l'image en binaire dans le message socket.io
+                        io.sockets.emit('refresh-msg', { data: 'whatever'});
                     } else {
                         fs.unlink(tempPath, err => {
                             if (err) return handleError(err, res);
@@ -125,6 +125,10 @@ module.exports = (logger) => {
         console.log("text received");
     });
 
+    app.get('/testSocketsImages',(req,res) => {
+        res.render('testSocketsImages')
+    });
+
     //endpoint to serve postedText content
     app.get('/postedText',(req,res) => {
         fs.readFile(config.textFile, 'utf8', function(err, data) {
@@ -142,7 +146,72 @@ module.exports = (logger) => {
     //       io.emit('chat message', msg);
     //     });
     // });
+
+    
+
     io.on('connection', function(socket){
+        socket.emit('refresh-msg', { wesh: 'whatever'});
+        socket.on('refresh-msg', function (data) {
+            console.log("wesh")
+            var readStream = fs.createReadStream(path.resolve(__dirname, './uploads/image.jpg'),{
+                encoding:'binary'
+            }), chunks = [];
+    
+            var readStream2 = fs.createReadStream(path.resolve(__dirname, './uploads/image2.jpg'),{
+                encoding:'binary'
+            }), chunks2 = [];
+            
+            var readStream3 = fs.createReadStream(path.resolve(__dirname, './uploads/image3.jpg'),{
+                encoding:'binary'
+            }), chunks3 = [];
+    
+            var readStream4 = fs.createReadStream(path.resolve(__dirname, './uploads/image4.jpg'),{
+                encoding:'binary'
+            }), chunks4 = [];
+            // readStream.on('readable', function(){
+            //     console.log('Image loading');
+            // })
+    
+            readStream.on('data', function(chunk){
+                console.log('en cours')
+                chunks.push(chunk);
+                    socket.emit('img-chunk',chunk);
+            })
+    
+            readStream2.on('data', function(chunk){
+                console.log('en cours')
+                chunks2.push(chunk);
+                    socket.emit('img-chunk2',chunk);
+            })
+    
+            readStream3.on('data', function(chunk){
+                console.log('en cours')
+                chunks3.push(chunk);
+                    socket.emit('img-chunk3',chunk);
+            })
+    
+            readStream4.on('data', function(chunk){
+                console.log('en cours')
+                chunks4.push(chunk);
+                    socket.emit('img-chunk4',chunk);
+            })
+    
+            readStream.on('end', function(){
+                console.log('Image 1 loaded');
+            })
+    
+            readStream2.on('end', function(){
+                console.log('Image 2 loaded');
+            })
+    
+            readStream3.on('end', function(){
+                console.log('Image 3 loaded');
+            })
+    
+            readStream4.on('end', function(){
+                console.log('Image 4 loaded');
+            })
+        });
         socket.on('chat message', function(msg){
           io.emit('chat message', msg);
         });
@@ -163,10 +232,6 @@ module.exports = (logger) => {
         });
 
 
-    });
-    //When I receive the socket message:
-    io.on('refresh-msg', function (socket) {
-        console.log(socket);
     });
 
     app.get("/display", (req, res) => {
