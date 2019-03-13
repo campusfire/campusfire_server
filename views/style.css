@@ -8,6 +8,6 @@ body, html{
 }
 #canvas {
     display: block;
-    border: 2px solid deepskyblue;
-    border-radius: 5px;
+    margin-left: 80px;
+    margin-top: 80px;
 }
