@@ -13,7 +13,9 @@ document.addEventListener("DOMContentLoaded", function() {
     var height = canvas.height;
     //canvas.style.backgroundImage = "url('../images/smartphone-screen.png')";
     canvas.style.border = "thick solid #0000FF";
-    canvas.style.borderRadius = "2px";
+    canvas.style.borderRadius = "20px";
+    canvas.style.marginTop = "80px";
+    canvas.style.marginLeft = "200px";
 
     // draw line received from server
     socket.on('draw_line', function (data) {
