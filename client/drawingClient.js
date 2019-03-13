@@ -6,12 +6,12 @@ document.addEventListener("DOMContentLoaded", function() {
     var winHeight  = window.innerHeight;
     var socket  = io.connect();
 
-    // set canvas to full browser width/height
-    canvas.height = winHeight;
+    // set canvas width/height
+    canvas.height = (4/5)*winHeight;
     canvas.width = (750/1334)*canvas.height;
     var width = canvas.width;
     var height = canvas.height;
-    canvas.style.backgroundImage = "url('../images/smartphone-screen.png')";
+    //canvas.style.backgroundImage = "url('../images/smartphone-screen.png')";
 
     // draw line received from server
     socket.on('draw_line', function (data) {

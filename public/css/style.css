@@ -8,5 +8,6 @@ body, html{
 }
 #canvas {
     display: block;
-    background-image:url(/images/smartphone-screen.png);
+    border: 2px solid deepskyblue;
+    border-radius: 5px;
 }
