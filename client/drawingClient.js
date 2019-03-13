@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var width = canvas.width;
     var height = canvas.height;
     //canvas.style.backgroundImage = "url('../images/smartphone-screen.png')";
-    canvas.style.border = "rounded solid #0000FF"
+    canvas.style.border = "thick solid #0000FF";
 
     // draw line received from server
     socket.on('draw_line', function (data) {
