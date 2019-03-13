@@ -8,4 +8,5 @@ body, html{
 }
 #canvas {
     display: block;
+    background-image:url(/images/smartphone-screen.png);
 }
