@@ -90,6 +90,7 @@ module.exports = (logger) => {
                         });
                         //Emit socket.io message:
                         //Peut etre plus élégant si j'arrive à faire passer directement l'image en binaire dans le message socket.io
+                        console.log("you should see that when you upload an image")
                         io.sockets.emit('refresh-msg', { data: 'whatever'});
                     } else {
                         fs.unlink(tempPath, err => {
@@ -150,6 +151,7 @@ module.exports = (logger) => {
     
 
     io.on('connection', function(socket){
+        // console.log("connected")
         socket.emit('refresh-msg', { wesh: 'whatever'});
         socket.on('refresh-msg', function (data) {
             console.log("wesh")
