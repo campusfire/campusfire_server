@@ -2,13 +2,16 @@ document.addEventListener("DOMContentLoaded", function() {
     // get canvas element and create context
     var canvas  = document.getElementById('drawing');
     var context = canvas.getContext('2d');
-    var width   = window.innerWidth;
-    var height  = window.innerHeight;
+    //var width   = window.innerWidth;
+    //var height  = window.innerHeight;
     var socket  = io.connect();
 
     // set canvas to full browser width/height
-    canvas.width = width;
-    canvas.height = height;
+    canvas.width = 750;
+    canvas.height = 1334;
+    var width = canvas.width;
+    var height = canvas.height;
+    canvas.backgroundImage = "url('smartphone-screen.png')";
 
     // draw line received from server
     socket.on('draw_line', function (data) {
