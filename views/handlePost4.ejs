@@ -27,7 +27,7 @@
     <body>
         <script src="/socket.io/socket.io.js"></script>
         <script type="text/javascript">
-            var socket = io.connect('http://localhost:10410');
+            var socket = io.connect();
             socket.on("refresh-msg", function (data) {
                 socket.emit("refresh-msg", {data: 'whatever'})
             });
