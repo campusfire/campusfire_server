@@ -1,7 +1,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <!-- <meta http-equiv="refresh" content="5"> -->
+        <meta http-equiv="refresh" content="5">
         <title>Campus Fire</title>
 
         <style>
@@ -26,61 +26,6 @@
     </head>
     <body>
         <script src="/socket.io/socket.io.js"></script>
-        <script type="text/javascript">
-            var socket = io.connect();
-            socket.on("refresh-msg", function (data) {
-                socket.emit("refresh-msg", {data: 'whatever'})
-            });
-            var imgChunks= [];
-            var imgChunks2= [];
-            var imgChunks3= [];
-            var imgChunks4= [];
-            var QRChunks= [];
-            var QRChunks2= [];
-            var QRChunks3= [];
-            var QRChunks4= [];
-            socket.on("img-chunk", function (chunk) {
-                var img = document.getElementById('img-stream');
-                imgChunks.push(chunk);
-                img.setAttribute('src', 'data:image/jpeg;base64,' + window.btoa(imgChunks));
-            });
-            socket.on("img-chunk2", function (chunk) {
-                var img = document.getElementById('img-stream2');
-                imgChunks2.push(chunk);
-                img.setAttribute('src', 'data:image/jpeg;base64,' + window.btoa(imgChunks2));
-            });
-            socket.on("img-chunk3", function (chunk) {
-                var img = document.getElementById('img-stream3');
-                imgChunks3.push(chunk);
-                img.setAttribute('src', 'data:image/jpeg;base64,' + window.btoa(imgChunks3));
-            });
-            socket.on("img-chunk4", function (chunk) {
-                var img = document.getElementById('img-stream4');
-                imgChunks4.push(chunk);
-                img.setAttribute('src', 'data:image/jpeg;base64,' + window.btoa(imgChunks4));
-            });
-
-            socket.on("QR-chunk", function (chunk) {
-                var img = document.getElementById('QR-stream');
-                QRChunks.push(chunk);
-                img.setAttribute('src', 'data:image/jpeg;base64,' + window.btoa(QRChunks));
-            });
-            socket.on("QR-chunk2", function (chunk) {
-                var img = document.getElementById('QR-stream2');
-                QRChunks2.push(chunk);
-                img.setAttribute('src', 'data:image/jpeg;base64,' + window.btoa(QRChunks2));
-            });
-            socket.on("QR-chunk3", function (chunk) {
-                var img = document.getElementById('QR-stream3');
-                QRChunks3.push(chunk);
-                img.setAttribute('src', 'data:image/jpeg;base64,' + window.btoa(QRChunks3));
-            });
-            socket.on("QR-chunk4", function (chunk) {
-                var img = document.getElementById('QR-stream4');
-                QRChunks4.push(chunk);
-                img.setAttribute('src', 'data:image/jpeg;base64,' + window.btoa(QRChunks4));
-            });
-        </script>
         <div style="width:100%">
             <div style="max-height:300px;max-width:300px;text-align:center; display: inline-block;">
                 <img src="/images/campusFireWOLogo.png" />
@@ -88,47 +33,39 @@
         </div>
         <div style="width:100%">
             <div style="height:300px;width:300px;text-align:center; display: inline-block;">
-                <img id='img-stream' src=""/>
-                <!-- <img src="/uploads/image.jpg"/> -->
+                <img src="/uploads/image.jpg"/>
             </div>
             <div style="height:300px;width:300px;text-align:center; display: inline-block;">
-                <img id='img-stream2' src=""/>
-                <!-- <img src="/uploads/image2.jpg"/> -->
+                <img src="/uploads/image2.jpg"/>
             </div>
         </div>
         <div style="width:100%">
             <div style="height:300px;width:300px;text-align:center; display: inline-block;">
-                <img id='img-stream3' src=""/>
-                <!-- <img src="/uploads/image3.jpg"/> -->
+                <img src="/uploads/image3.jpg"/>
             </div>
             <div style="height:300px;width:300px;text-align:center; display: inline-block;">
-                <img id='img-stream4' src=""/>
-                <!-- <img src="/uploads/image4.jpg"/> -->
+                <img src="/uploads/image4.jpg"/>
             </div>
         </div>
         
         <% include partials/table.ejs %>
         <%if (qrRegister.qrCode1 ==0) { %> 
-        <!-- <img style ="display: block;margin-right: 10px;margin-bottom: 10px;max-height: 100px;max-width: 100px" src="/qrCodes/qrCode1.png"/> -->
-        <img id = "QR-stream" style ="display: block;margin-right: 10px;margin-bottom: 10px;max-height: 100px;max-width: 100px" src=""/>
+        <img style ="display: block;margin-right: 10px;margin-bottom: 10px;max-height: 100px;max-width: 100px" src="/qrCodes/qrCode1.png"/>
         <% } else { %>
         <img style ="display: block;margin-right: 10px;margin-bottom: 10px;max-height: 100px;max-width: 100px" src="/qrCodes/player1.jpg"/>
         <% } %>
         <%if (qrRegister.qrCode2 ==0) { %>
-        <!-- <img style="display: block;margin-right: 10px;margin-bottom: 10px;max-height: 100px;max-width: 100px" src="/qrCodes/qrCode2.png" /> -->
-        <img id = "QR-stream2" style ="display: block;margin-right: 10px;margin-bottom: 10px;max-height: 100px;max-width: 100px" src=""/>
+        <img style="display: block;margin-right: 10px;margin-bottom: 10px;max-height: 100px;max-width: 100px" src="/qrCodes/qrCode2.png" />
         <% } else { %>
         <img style="display: block;margin-right: 10px;margin-bottom: 10px;max-height: 100px;max-width: 100px" src="/qrCodes/player2.jpg" />
         <% } %>
         <%if (qrRegister.qrCode3 ==0) { %> 
-        <!-- <img style ="display: block;margin-right: 10px;margin-bottom: 10px;max-height: 100px;max-width: 100px" src="/qrCodes/qrCode3.png"/> -->
-        <img id = "QR-stream3" style ="display: block;margin-right: 10px;margin-bottom: 10px;max-height: 100px;max-width: 100px" src=""/>
+        <img style ="display: block;margin-right: 10px;margin-bottom: 10px;max-height: 100px;max-width: 100px" src="/qrCodes/qrCode3.png"/>
         <% } else { %>
         <img style="display: block;margin-right: 10px;margin-bottom: 10px;max-height: 100px;max-width: 100px" src="/qrCodes/player3.jpg" />
         <% } %>
         <%if (qrRegister.qrCode4 ==0) { %> 
-        <!-- <img style ="display: block;margin-right: 10px;margin-bottom: 10px;max-height: 100px;max-width: 100px" src="/qrCodes/qrCode4.png"/> -->
-        <img id = "QR-stream4" style ="display: block;margin-right: 10px;margin-bottom: 10px;max-height: 100px;max-width: 100px" src=""/>
+        <img style ="display: block;margin-right: 10px;margin-bottom: 10px;max-height: 100px;max-width: 100px" src="/qrCodes/qrCode4.png"/>
         <% } else { %>
         <img style="display: block;margin-right: 10px;margin-bottom: 10px;max-height: 100px;max-width: 100px" src="/qrCodes/player4.jpg" />
         <% } %>

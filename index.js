@@ -90,8 +90,6 @@ module.exports = (logger) => {
                         });
                         //Emit socket.io message:
                         //Peut etre plus élégant si j'arrive à faire passer directement l'image en binaire dans le message socket.io
-                        console.log("you should see that when you upload an image")
-                        io.sockets.emit('refresh-msg', { data: 'whatever'});
                     } else {
                         fs.unlink(tempPath, err => {
                             if (err) return handleError(err, res);
@@ -152,68 +150,7 @@ module.exports = (logger) => {
 
     io.on('connection', function(socket){
         // console.log("connected")
-        socket.emit('refresh-msg', { wesh: 'whatever'});
-        socket.on('refresh-msg', function (data) {
-            console.log("wesh")
-            var readStream = fs.createReadStream(path.resolve(__dirname, './uploads/image.jpg'),{
-                encoding:'binary'
-            }), chunks = [];
-    
-            var readStream2 = fs.createReadStream(path.resolve(__dirname, './uploads/image2.jpg'),{
-                encoding:'binary'
-            }), chunks2 = [];
-            
-            var readStream3 = fs.createReadStream(path.resolve(__dirname, './uploads/image3.jpg'),{
-                encoding:'binary'
-            }), chunks3 = [];
-    
-            var readStream4 = fs.createReadStream(path.resolve(__dirname, './uploads/image4.jpg'),{
-                encoding:'binary'
-            }), chunks4 = [];
-            // readStream.on('readable', function(){
-            //     console.log('Image loading');
-            // })
-    
-            readStream.on('data', function(chunk){
-                console.log('en cours')
-                chunks.push(chunk);
-                    socket.emit('img-chunk',chunk);
-            })
-    
-            readStream2.on('data', function(chunk){
-                console.log('en cours')
-                chunks2.push(chunk);
-                    socket.emit('img-chunk2',chunk);
-            })
-    
-            readStream3.on('data', function(chunk){
-                console.log('en cours')
-                chunks3.push(chunk);
-                    socket.emit('img-chunk3',chunk);
-            })
-    
-            readStream4.on('data', function(chunk){
-                console.log('en cours')
-                chunks4.push(chunk);
-                    socket.emit('img-chunk4',chunk);
-            })
-    
-            readStream.on('end', function(){
-                console.log('Image 1 loaded');
-            })
-    
-            readStream2.on('end', function(){
-                console.log('Image 2 loaded');
-            })
-    
-            readStream3.on('end', function(){
-                console.log('Image 3 loaded');
-            })
-    
-            readStream4.on('end', function(){
-                console.log('Image 4 loaded');
-            })
-        });
+        
         socket.on('chat message', function(msg){
           io.emit('chat message', msg);
         });
