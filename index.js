@@ -38,13 +38,13 @@ module.exports = (logger) => {
     app.use(express.static(path.join(__dirname, 'client')));
 
 
-    app.post('/handlePost',(req,res) => {
-        // var myImage=req.body.imageURL;
+    // app.post('/handlePost',(req,res) => {
+    //     // var myImage=req.body.imageURL;
+    //     res.setHeader('Content-Type', 'application/json');
+    //     res.send(JSON.stringify({"Resultat":myImage}));
+    //     console.log(myImage);
+    //     });
 
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify({"Resultat":myImage}));
-        console.log(myImage);
-        });
     //Handle multi part post request
     app.post(
         "/file-upload",
@@ -286,11 +286,7 @@ module.exports = (logger) => {
         });
     });
 
-    app.get('/home',(req,res)=>{
-        res.render("home")
-    });
-
-    app.post('/authenticationPlayer1',(req,res) => {
+    app.post('/authenticationPlayer',(req,res) => {
         var barcodePlayer=req.body.barcodeSent;
         let rawQrRegister=fs.readFileSync(config.qrRegister);
         qrRegister=JSON.parse(rawQrRegister);
@@ -342,16 +338,15 @@ module.exports = (logger) => {
         console.log('barcode reçu :'+ barcodePlayer)
         });
 
-
-    app.get('/', (req, res) => {
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify({"Resultat":"Bonjour depuis agastache"}));
-    });
-
     app.get('/drawing',(req,res)=>{
         res.render("drawing")
     });
 
+    app.get('*', function(req, res){
+        console.log("bonnjour")
+        res.render("error")
+    });
+   
     return http;
 
 };
