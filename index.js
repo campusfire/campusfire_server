@@ -78,7 +78,7 @@ module.exports = (logger) => {
 
                 try{
                     if (path.extname(req.file.originalname).toLowerCase() === ".jpg" || path.extname(req.file.originalname).toLowerCase() === ".jpeg" || path.extname(req.file.originalname).toLowerCase() === ".png")   {
-                        
+
                         fs.rename(tempPath, targetPath, err => {
                             if (err){
                                 console.log(err.stringify)
@@ -114,7 +114,7 @@ module.exports = (logger) => {
     app.post('/postText',(req,res) => {
         var receivedText = req.body.sentText;
 
-        fs.appendFile(config.textFile, receivedText+"\n", (err) => { //ajout d'une ligne au fichier d'écriture
+        fs.appendFile(config.textFile, "\n"+receivedText, (err) => { //ajout d'une ligne au fichier d'écriture
             if (err) throw err;
         });
 
@@ -146,11 +146,11 @@ module.exports = (logger) => {
     //     });
     // });
 
-    
+
 
     io.on('connection', function(socket){
         // console.log("connected")
-        
+
         socket.on('chat message', function(msg){
           io.emit('chat message', msg);
         });
