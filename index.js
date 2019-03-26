@@ -26,24 +26,13 @@ var line_history = [];
 
 
 module.exports = (logger) => {
-
     app.set('view engine', 'ejs');
-
-
     app.use(bodyParser.urlencoded({limit:'10mb', extended: false }));
     app.use(bodyParser.json());
     app.use("/uploads", express.static(__dirname + '/uploads'));
     app.use("/qrCodes", express.static(__dirname + '/qrCodes'));
     app.use("/images", express.static(__dirname + '/images'));
     app.use(express.static(path.join(__dirname, 'client')));
-
-
-    // app.post('/handlePost',(req,res) => {
-    //     // var myImage=req.body.imageURL;
-    //     res.setHeader('Content-Type', 'application/json');
-    //     res.send(JSON.stringify({"Resultat":myImage}));
-    //     console.log(myImage);
-    //     });
 
     //Handle multi part post request
     app.post(
@@ -75,7 +64,6 @@ module.exports = (logger) => {
                     console.log(oldestImageName);
                     targetPath = path.join(__dirname, "./uploads/"+oldestImageName);
                 }
-
                 try{
                     if (path.extname(req.file.originalname).toLowerCase() === ".jpg" || path.extname(req.file.originalname).toLowerCase() === ".jpeg" || path.extname(req.file.originalname).toLowerCase() === ".png")   {
 
@@ -140,14 +128,6 @@ module.exports = (logger) => {
         res.render('testSockets')
     });
 
-    // io.on('connection', function(socket){
-    //     socket.on('chat message', function(msg){
-    //       io.emit('chat message', msg);
-    //     });
-    // });
-
-
-
     io.on('connection', function(socket){
         // console.log("connected")
 
@@ -169,8 +149,6 @@ module.exports = (logger) => {
             // send line to all clients
             io.emit('draw_line', { line: data.line });
         });
-
-
     });
 
     app.get("/display", (req, res) => {
@@ -327,14 +305,6 @@ module.exports = (logger) => {
             res.status(401);
             res.send(JSON.stringify({ "Resultat": barcodePlayer, "AuthStatus": "AuthFailed" }));
         }
-
-        /*
-        if (barcodePlayer1=="CodeJoueur1Complique") {
-        res.send(JSON.stringify({"Resultat":barcodePlayer1,"AuthStatus":"AuthGranted"}));
-        }
-        else {
-        res.send(JSON.stringify({"Resultat":barcodePlayer1,"AuthStatus":"AuthFailed"}));
-        }*/
         console.log('barcode reçu :'+ barcodePlayer)
         });
 
